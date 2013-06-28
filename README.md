@@ -22,7 +22,7 @@ Currently the API supports only two kinds of requests:
 
 
 ###Get all available canteens
-You can use the following URIs to get all available canteens:
+You can use the following URI to get all available canteens:
 ```
 http://mensa.xonix.ch/mensas
 ```
