@@ -144,5 +144,5 @@ If the daily meal plan information is not available you'll get the following res
   }
 }
 ```
-In this case the attribute ok is set to the string "false" and the content attribute is a empty string. 
+In this case the attribute ok is set to the string "false" and the content attribute is an empty string. 
 The message attribute msg describes the error in more human readable way.
