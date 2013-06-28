@@ -131,9 +131,10 @@ The response is as follows:
   }
 }
 ```
-The response contains the daily mealplan object in the content attribute.  In the attribute menus we have a list all menu objects.
+The response contains the daily mealplan object in the content attribute. In the attribute menus we have a list all menu objects.
+The mensa attribute stores the name of the canteen and the date attribute the date of the meal plan.
 
-If the daily meal plan information are not available you'll get the following response:
+If the daily meal plan information is not available you'll get the following response:
 ```
 {
   "result":{
