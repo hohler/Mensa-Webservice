@@ -15,7 +15,7 @@ The Mensa-Unibe-Webservice provides the stored daily meal plans in the JSON form
 The main address of Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
 Each request is performed using a HTTP GET request.
 
-Currently the API supports only to ressources:
+Currently the API supports only two kinds of requests:
 
 - Get all available canteens
 - Get the current daily meal plan of a canteen with id {id}
