@@ -9,7 +9,17 @@ That's the reason why I started this small project called Mensa-Unibe-Webservice
 ##How does it work
 Mensa-Unibe-Webservice is based on the newsletter service [mensaunibe.zfv.ch](http://mensaunibe.zfv.ch/ "") which sends every day at 5:00 a email to the subscried email addresses.
 Using this newsletter service the data of the daily meals are parsed and stored on the remote service Mensa-Unibe-Webservice.
-The web service provides the stored daily meal plans in the JSON format.
+This web service provides the stored daily meal plans in the JSON format.
+
+##Where's the source code
+At the moment the source code of this project is not public available, because the email parser is not mature yet.
+The project consists of two parts:
+
+- Backend:  Email parser written in python
+- Frontend: Mensa-Unibe-Webservice written in php
+
+As soon as possible I'll make the source code public.
+
 
 ##Web service API
 The main address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
