@@ -131,8 +131,8 @@ The response is as follows:
   }
 }
 ```
-The response contains the daily mealplan object in the content attribute. In the attribute menus we have a list all menu objects.
-The mensa attribute stores the name of the canteen and the date attribute the date of the meal plan.
+The response contains the daily meal plan object in the content attribute. 
+In the attribute menus we have a list of all menu objects. Besides that the mensa attribute stores the name of the canteen and the date attribute the date of the meal plan.
 
 If the daily meal plan information is not available you'll get the following response:
 ```
@@ -144,4 +144,5 @@ If the daily meal plan information is not available you'll get the following res
   }
 }
 ```
-In this case the attribute ok is set to string "false" and the content attribute is a empty string.
+In this case the attribute ok is set to the string "false" and the content attribute is a empty string. 
+The message attribute msg describes the error in more human readable way.
