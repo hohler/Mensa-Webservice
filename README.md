@@ -9,10 +9,10 @@ That's the reason why I started this small project called Mensa-Unibe-Webservice
 ##How does it work
 Mensa-Unibe-Webservice is based on the newsletter service [mensaunibe.zfv.ch](http://mensaunibe.zfv.ch/ "") which sends every day at 5:00 a email to the subscried email addresses.
 Using this newsletter service the data of the daily meals are parsed and stored on the remote service Mensa-Unibe-Webservice.
-The Mensa-Unibe-Webservice provides the stored daily meal plans in the JSON format.
+The web service provides the stored daily meal plans in the JSON format.
 
 ##Web service API
-The main address of Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
+The main address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
 Each request is performed using a HTTP GET request.
 
 Currently the API supports only two kinds of requests:
