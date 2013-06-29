@@ -1,7 +1,7 @@
 Mensa-Unibe-Webservice
 ======================
 
-Mensa-Unibe-Webservice is a simple JSON/REST API for receiving the daily meals of the canteens at the university of bern.
+Mensa-Unibe-Webservice is a simple JSON/REST API for receiving the daily meals of the canteens at the University of Bern.
 
 Unfortunately there is no official API or a nice way to obtain these data in an appropriate exchange format such as xml odr json.
 That's the reason why I started this small project called Mensa-Unibe-Webservice!
