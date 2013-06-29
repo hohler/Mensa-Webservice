@@ -15,7 +15,7 @@ This web service provides the stored daily meal plans in the JSON format.
 At the moment the source code of this project is not public available, because the email parser is not mature yet.
 The project consists of two parts:
 
-- Backend:  Email parser written in python -> see (Mensa-Mail-Catcher)[https://github.com/lexruee/Mensa-Mail-Catcher]
+- Backend:  Email parser written in python -> see [Mensa-Mail-Catcher](https://github.com/lexruee/Mensa-Mail-Catcher)
 - Frontend: Mensa-Unibe-Webservice written in php
 
 As soon as possible I'll make the source code public.
