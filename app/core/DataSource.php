@@ -24,15 +24,24 @@ class DataSource {
 		return self::$instance;
 	}
 	
-	public function getCanteens(){
-		$sql = 'SELECT * FROM mensa';
+	/**
+	 * 
+	 * @return multitype:
+	 */
+	public function queryMensas(){
+		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa';
 		$stmt = $this->db->query($sql);
 		$canteens = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $canteens;
 	}
 	
-	public function getCanteen($id){
-		$sql = 'SELECT * FROM mensa WHERE id=:id';
+	/**
+	 * 
+	 * @param $id
+	 * @return mixed
+	 */
+	public function queryMensaById($id){
+		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa WHERE id=:id';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':id',$id, PDO::PARAM_INT);
 		$stmt->execute();
