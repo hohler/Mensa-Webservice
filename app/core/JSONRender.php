@@ -1,5 +1,5 @@
 <?php
-namespace app\service;
+namespace app\core;
 
 class JSONRender implements Render {
 	function __construct($slim) {

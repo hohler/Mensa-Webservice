@@ -6,12 +6,14 @@ $routes = array (
 						'POST' 
 				),
 				'path' => '/',
-				'handler' => 'test' 
+				'handler' => 'test',
+				'controller' => '\app\controller\Controller' 
 		),
 		array (
 				'method' => 'GET',
 				'path' => '/mensas',
-				'handler' => 'getMensas' 
+				'handler' => 'getMensas',
+				'controller' => '\app\controller\Controller'
 		) 
 );
 ?>

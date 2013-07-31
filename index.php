@@ -1,10 +1,9 @@
 <?php 
 require 'vendor/autoload.php';
-require 'app/config.php';
-require 'app/routes.php';
-use app\service\JSONRender;
-use app\service\Controller;
-use app\service\DataSource;
+require 'config.php';
+require 'routes.php';
+use app\core\JSONRender;
+use app\core\DataSource;
 
 //autoload function
 $autoload = function ($className){
@@ -18,11 +17,13 @@ $autoload = function ($className){
 spl_autoload_register($autoload);
 $slim = new \Slim\Slim ();
 $render = new JSONRender($slim);
-$controller = new Controller(DataSource::getInstance($config));
+DataSource::getInstance($config); #create/get instance
 
 foreach($routes as $route){
 	$request = $slim->request();
 	$handler = $route['handler'];
+	$controller = new $route['controller'];
+	
 	$func = function () use ($controller,$handler,$request,$render) {
 		$render->render($controller->$handler($request));
 	};

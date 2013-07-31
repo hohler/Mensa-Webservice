@@ -1,5 +1,5 @@
 <?php
-namespace app\service;
+namespace app\core;
 use PDO;
 class DataSource {
 	private $db;

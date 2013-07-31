@@ -1,5 +1,5 @@
 <?php
-namespace app\service;
+namespace app\core;
 
 interface Render {
 	public function render($object);
