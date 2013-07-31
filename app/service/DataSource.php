@@ -3,8 +3,9 @@ namespace app\service;
 use PDO;
 class DataSource {
 	private $db;
+	private static $instance = null;
 	
-	function __construct($config){
+	private function __construct($config){
 		$driver = $config['driver'];
 		$host = $config['host'];
 		$dbname = $config['dbname'];
@@ -15,6 +16,12 @@ class DataSource {
 	
 	function __destruct(){
 		$this->db = null;
+	}
+	
+	function getInstance($config=null){
+		if(self::$instance==null && $config!=null)
+			self::$instance = new DataSource($config['db']);
+		return self::$instance;
 	}
 }
 

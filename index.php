@@ -1,7 +1,9 @@
 <?php 
 require 'vendor/autoload.php';
 require 'app/config.php';
+require 'app/routes.php';
 use app\service\JSONRender;
+use app\service\Controller;
 use app\service\DataSource;
 
 //autoload function
@@ -16,27 +18,24 @@ $autoload = function ($className){
 spl_autoload_register($autoload);
 $slim = new \Slim\Slim ();
 $render = new JSONRender($slim);
-$dataSource = new DataSource($config);
+$controller = new Controller(DataSource::getInstance($config));
 
-$slim->get ( '/', function () use($slim,$render) {
-	$response = array (
-			'result' => array (
-					'content' => array (
-							1,
-							2,
-							3,
-							4,
-							5,
-							6 
-					) 
-			) 
-	);
-	$render->render ( $response );
-} );
-
-
+foreach($routes as $route){
+	$request = $slim->request();
+	$handler = $route['handler'];
+	$func = function () use ($controller,$handler,$request,$render) {
+		$render->render($controller->$handler($request));
+	};
+	// map route with a handler
+	$map = $slim->map($route['path'],$func);
+	if(is_array($route['method'])){	
+		foreach($route['method'] as $m){
+			$map->via($m);
+		}
+	} else {
+		$map->via($route['method']);
+	}
+}
 
 $slim->run ();
-
-
 ?>
