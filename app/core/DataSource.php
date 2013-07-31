@@ -23,6 +23,14 @@ class DataSource {
 			self::$instance = new DataSource($config['db']);
 		return self::$instance;
 	}
+	
+	public function getCanteens(){
+		$sql = 'SELECT * FROM mensa';
+		$stmt = $this->db->query($sql);
+		$canteens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $canteens;
+	}
+	
 }
 
 ?>

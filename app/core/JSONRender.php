@@ -13,7 +13,7 @@ class JSONRender implements Render {
 		}
 		$this->slim->response ()['Content-type'] = 'application/json; charset=utf-8';
 		$rendered = json_encode ( $object, $options );
-		$this->slim->response ()->body ( $rendered );
+		$this->slim->response ()->body ( $rendered) ;
 	}
 }
 
