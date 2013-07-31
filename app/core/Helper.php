@@ -32,5 +32,18 @@ class Helper {
 		array_walk($array,$func);
 		return $array;
 	}
+	
+	public static function getParamNames($path){
+		$slices = explode('/',$path);
+		$filter = function($slice){
+			return !empty($slice) && strcmp($slice[0],':')==0;
+		};
+		$paramNames = array_filter($slices,$filter);
+		$map = function($param){
+			return substr($param,1);
+		};
+		$paramNames = array_map($map, $paramNames);
+		return $paramNames;
+	}
 }
 ?>

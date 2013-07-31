@@ -1,12 +1,9 @@
 <?php
 $routes = array (
 		array (
-				'method' => array (
-						'GET',
-						'POST' 
-				),
+				'method' => 'GET',
 				'path' => '/',
-				'handler' => 'test',
+				'handler' => 'getMensas',
 				'controller' => '\app\controller\Controller' 
 		),
 		array (
@@ -14,6 +11,12 @@ $routes = array (
 				'path' => '/mensas',
 				'handler' => 'getMensas',
 				'controller' => '\app\controller\Controller'
-		) 
+		),
+		array(
+				'method' => 'GET',
+				'path' => '/mensas/:id',
+				'handler' => 'getMensa',
+				'controller' => '\app\controller\Controller'
+		)
 );
 ?>

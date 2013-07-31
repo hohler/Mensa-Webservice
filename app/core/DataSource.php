@@ -31,6 +31,15 @@ class DataSource {
 		return $canteens;
 	}
 	
+	public function getCanteen($id){
+		$sql = 'SELECT * FROM mensa WHERE id=:id';
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':id',$id, PDO::PARAM_INT);
+		$stmt->execute();
+		$canteen = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $canteen;
+	}
+	
 }
 
 ?>

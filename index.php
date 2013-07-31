@@ -4,6 +4,7 @@ require 'config.php';
 require 'routes.php';
 use app\core\JSONRender;
 use app\core\DataSource;
+use app\core\Helper;
 
 //autoload function
 $autoload = function ($className){
@@ -23,9 +24,13 @@ foreach($routes as $route){
 	$request = $slim->request();
 	$handler = $route['handler'];
 	$controller = new $route['controller'];
+	$path = $route['path'];
 	
-	$func = function () use ($controller,$handler,$request,$render) {
-		$render->render($controller->$handler($request));
+	$func = function () use ($controller,$handler,$path,$request,$render) {
+		$arguments = func_get_args();
+		$paramNames = Helper::getParamNames($path);
+		$params = array_combine($paramNames,$arguments);
+		$render->render($controller->$handler($params));
 	};
 	// map route with a handler
 	$map = $slim->map($route['path'],$func);
