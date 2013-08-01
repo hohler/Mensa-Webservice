@@ -5,6 +5,7 @@ use app\core\MainController;
 use app\core\Helper;
 use app\core\Response;
 class Controller extends MainController{
+	private static $token = 'Tm6eePnrnrrT9eLjin5z';
 	
 	/**
 	 * GET
@@ -44,25 +45,29 @@ class Controller extends MainController{
 	public function addMenus($params){
 		$body = $this->request->getBody();
 		$code = 200;
-		$menus = json_decode($body,true);
-		$menus = Helper::utf8_string_array_decode($menus);
-		$created = array();
-		foreach($menus as $menuData){
-			$mensa = $this->ds->queryMensaByName($menuData['mensa']);
-			$mensaId = $mensa['id'];
-			$title = $menuData['title'];
-			$date = $menuData['date'];
-			$price = $menuData['price'];
-			if(!$this->ds->doesMenuExist($mensaId, $title, $date)){
-				$success = $this->ds->createMenu($mensaId,$title,$date,$menu,$price);
-				if($success){
-					array_push($created,$menu);
+		$message = json_decode($body,true);
+		if(strcmp($message['token'],self::$token)==0){
+			$menus = $message['menus'];
+			$menus = Helper::utf8_string_array_decode($menus);
+			$created = array();
+			foreach($menus as $menuData){
+				$mensa = $this->ds->queryMensaByName($menuData['mensa']);
+				$mensaId = $mensa['id'];
+				$title = $menuData['title'];
+				$date = $menuData['date'];
+				$menu = $menuData['menu'];
+				$price = $menuData['price'];
+				if(!$this->ds->doesMenuExist($mensaId, $title, $date)){
+					$success = $this->ds->createMenu($mensaId,$title,$date,$menu,$price);
+					if($success){
+						array_push($created,$menu);
+					}
 				}
 			}
+			if(count($created)!=0)
+				$code = 201;
+			$this->response->status($code);
 		}
-		if(count($created)!=0)
-			$code = 201;
-		
 		return new Response($created,$code);
 	}
 	

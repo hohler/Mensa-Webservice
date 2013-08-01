@@ -7,6 +7,6 @@ $config = array (
 				'user' => 'root',
 				'password' => 'root' 
 		), 
-		'token' => 'Tm6eePnrnrrT9eLjin5z'
+		
 );
 ?>

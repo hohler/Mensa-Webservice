@@ -20,7 +20,7 @@ $routes = array (
 		),
 		array (
 				'method' => 'POST',
-				'path' => '/mensas/:id/menus',
+				'path' => '/mensas/menus',
 				'handler' => 'addMenus',
 				'controller' => '\app\controller\Controller' 
 		),
