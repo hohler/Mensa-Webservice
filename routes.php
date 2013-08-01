@@ -26,19 +26,25 @@ $routes = array (
 		),
 		array(
 				'method' => 'GET',
-				'path' => '/mensas/:id/daily/:date',
+				'path' => '/mensas/:id/dailyplan/:date',
 				'handler' => 'getDailyMenuplan',
 				'controller' => '\app\controller\Controller'
 		),
 		array(
 				'method' => 'GET',
-				'path' => '/mensas/:id/daily',
+				'path' => '/mensas/:id/dailyplan',
 				'handler' => 'getDailyMenuplan',
 				'controller' => '\app\controller\Controller'
 		),
 		array(
 				'method' => 'GET',
-				'path' => '/mensas/:id/weekly',
+				'path' => '/mensas/:id/weeklyplan',
+				'handler' => 'getWeeklyMenuplan',
+				'controller' => '\app\controller\Controller'
+		),
+		array(
+				'method' => 'GET',
+				'path' => '/mensas/:id/weeklyplan/:day',
 				'handler' => 'getWeeklyMenuplan',
 				'controller' => '\app\controller\Controller'
 		)

@@ -71,6 +71,11 @@ class Controller extends MainController{
 		return new Response($created,$code);
 	}
 	
+	/**
+	 * GET
+	 * @param $params
+	 * @return \app\core\Response
+	 */
 	public function getDailyMenuplan($params){
 		$mensaId = $params['id'];
 		
@@ -81,6 +86,7 @@ class Controller extends MainController{
 		}
 		
 		$plan = $this->ds->queryDailyMenuplan($mensaId, $date);
+		
 		if(count($plan['menus'])==0){
 			$code = 404;
 		} else { 
@@ -89,14 +95,36 @@ class Controller extends MainController{
 		return new Response($plan,$code);
 	}
 	
+	/**
+	 * GET
+	 * @param $params
+	 * @return boolean|\app\core\Response
+	 */
 	public function getWeeklyMenuplan($params){
 		$mensaId = $params['id'];
-		echo 'test';
+		$day = null;
+		if(array_key_exists('day',$params)){
+			$day = ucfirst(strtolower($params['day']));
+		}
 		$plan = $this->ds->queryWeeklyMenuplan($mensaId);
-		if(count($plan['menus'])!=0){
-			$code = 200;
-		} else {
+		
+		if($day!=null){
+			$filter = function($key) use ($day){
+				return strcmp($key,$day)==0;
+			};
+			$menus = array();
+			foreach($plan['menus'] as $key=>$value){
+				if(strcmp($key,$day)==0){
+					array_push($menus,$value);
+				}
+			}
+			$plan['menus'] = $menus;
+		}
+		
+		if(count($plan['menus'])==0){
 			$code = 404;
+		} else { 
+			$code = 200;
 		}
 		return new Response($plan,$code);
 	}
