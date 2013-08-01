@@ -29,7 +29,7 @@ API version 1 supports these kinds of get requests:
 - Weekly menuplan
 
 
-####List of canteens
+####List of all canteens
 You can use the following URI to get all available canteens:
 ```
 http://mensa.xonix.ch/v1/mensas
@@ -66,7 +66,7 @@ The content attribute contains a list of canteen objects.
 
 By means of this response message you get all valid canteens id's which are needed for further requests.
 
-####Get daily menuplan
+####Get current daily menuplan
 Using a valid canteen id you can get the current daily meal plan by the following URI:
 ```
 http://mensa.xonix.ch/v1/mensa/{id}/dailyplan
@@ -132,15 +132,14 @@ If the daily meal plan information is not available you'll get the following res
 In this case the attribute code is set to the number 404. 
 The message attribute msg describes the error in a more human readable way.
 
-####Get daily menuplan at a specific date
+####Get daily menuplan on a specific date
 The date format is ISO 8601. E.g.: 2013-12-24
 ```
 http://mensa.xonix.ch/v1/mensas/{id}/dailyplan/{date}
 ```
-####Get weekly menuplan
-The date format is ISO 8601. E.g.: 2013-12-24
+####Get current weekly menuplan
 ```
-http://mensa.xonix.ch/v1/mensas/1/dailyplan
+http://mensa.xonix.ch/v1/mensas/1/weeklyplan
 ```
 Example response:
 ```
@@ -233,7 +232,7 @@ Example response:
 }
 ```
 
-####Get daily menuplan at a specific day
+####Get daily menuplan on a specific day
 Valid values for the placeholder {day} are: monday,tuesday,wednesday,...
 ```
 http://mensa.xonix.ch/v1/mensas/1/weeklyplan/{day}
