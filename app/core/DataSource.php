@@ -29,7 +29,7 @@ class DataSource {
 	 * @return multitype:
 	 */
 	public function queryMensas(){
-		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensas';
+		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa';
 		$stmt = $this->db->query($sql);
 		$mensas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $mensas;
@@ -41,7 +41,7 @@ class DataSource {
 	 * @return mixed
 	 */
 	public function queryMensaById($id){
-		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensas WHERE id=:id';
+		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa WHERE id=:id';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':id',$id, PDO::PARAM_INT);
 		$stmt->execute();
@@ -55,7 +55,7 @@ class DataSource {
 	 * @return mixed
 	 */
 	public function queryMensaByName($name){
-		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensas'
+		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa'
 				.' WHERE id_name LIKE :name OR name LIKE :name LIMIT 1';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':name',"%{$name}%", PDO::PARAM_STR);
@@ -66,7 +66,7 @@ class DataSource {
 	
 	public function createMenu($mensaId,$title,$date,$menu,$price){
 		$menu = implode('|',$menu);
-		$sql = 'INSERT INTO menus (mensa_id,title,date,menu,price)'
+		$sql = 'INSERT INTO menu (mensa_id,title,date,menu,price)'
 				.' VALUES (:mensa_id,:title,:date,:menu,:price)';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId,PDO::PARAM_INT);
@@ -79,7 +79,7 @@ class DataSource {
 	
 	public function doesMenuExist($id,$menuTitle,$dateString){
 		$sql = 'SELECT EXISTS('
-				.' SELECT 1 FROM `menus`'
+				.' SELECT 1 FROM `menu`'
 				.' WHERE mensa_id=:mensa_id and `date`=:date_str and title=:title)'
 				.' AS `result`';
 		$stmt = $this->db->prepare($sql);
@@ -92,8 +92,8 @@ class DataSource {
 	}
 	
 	public function queryDailyMenuplan($mensaId,$date){
-		$sql = 'SELECT `title`,`date`,`price`,`menu`,`name` AS `mensa` FROM `menus`'
-				.' INNER JOIN `mensas` ON mensas.id = menus.mensa_id'
+		$sql = 'SELECT `title`,`date`,`price`,`menu`,`name` FROM `menu`'
+				.' INNER JOIN `mensa` ON mensa.id = menu.mensa_id'
 				.' WHERE mensa_id=:mensa_id and `date`=:date';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
@@ -105,7 +105,7 @@ class DataSource {
 		$i = 0;
 		foreach($rows as $menu){
 			if($i==0){
-				$plan['mensa'] = $menu['mensa'];
+				$plan['mensa'] = $menu['name'];
 				$plan['date'] = $menu['date'];	
 			}
 			$menu = array(
@@ -121,8 +121,8 @@ class DataSource {
 	}
 	
 	public function queryWeeklyMenuplan($mensaId){
-		$sql = "SELECT `title`, `menu`, `price`,  `date` , `name` AS `mensa`, WEEK(  `date` ) AS  `week` , DATE_FORMAT(  `date` ,  '%W' ) AS  `day` 
-				FROM  `menus` INNER JOIN mensas ON mensas.id = menus.mensa_id WHERE mensa_id =:mensa_id HAVING  `week` = WEEK( CURDATE( ) )";
+		$sql = "SELECT `title`, `menu`, `price`,  `date`, `name`, WEEK(  `date` ) AS  `week` , DATE_FORMAT(  `date` ,  '%W' ) AS  `day` 
+				FROM  `menu` INNER JOIN mensa ON mensa.id = menu.mensa_id WHERE mensa_id =:mensa_id HAVING  `week` = WEEK( CURDATE( ) )";
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
 		$stmt->execute();
@@ -132,7 +132,7 @@ class DataSource {
 		$i = 0;
 		foreach($rows as $row){
 			if($i==0){
-				$plan['mensa'] = $row['mensa'];
+				$plan['mensa'] = $row['name'];
 				$plan['week'] = $row['week'];
 			}
 			

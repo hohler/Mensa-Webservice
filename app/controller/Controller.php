@@ -108,15 +108,28 @@ class Controller extends MainController{
 		}
 		$plan = $this->ds->queryWeeklyMenuplan($mensaId);
 		
+		//check if the weekly plan should be filtered
 		if($day!=null){
 			$filter = function($key) use ($day){
 				return strcmp($key,$day)==0;
 			};
 			$menus = array();
-			foreach($plan['menus'] as $key=>$value){
-				if(strcmp($key,$day)==0){
-					array_push($menus,$value);
+			
+			//copy menus with a day field equals to $day
+			foreach($plan['menus'] as $dayKey=>$menusOfDay){
+				if(strcmp($dayKey,$day)==0){
+					$i=0;
+					//remove for each menu its date field
+					foreach($menusOfDay as &$menuOfDay){ //give a reference to the sub array
+						if($i==0){
+							$plan['date'] = substr($menuOfDay['date'],0); //copy string
+						}
+						unset($menuOfDay['date']); //remove field
+						$i++;
+					}
+					array_push($menus,$menusOfDay);
 				}
+				
 			}
 			$plan['menus'] = $menus;
 		}
