@@ -6,6 +6,7 @@ $config = array (
 				'dbname' => 'mensa_at_unibe',
 				'user' => 'root',
 				'password' => 'root' 
-		) 
+		), 
+		'token' => 'Tm6eePnrnrrT9eLjin5z'
 );
 ?>

@@ -10,13 +10,38 @@ $routes = array (
 				'method' => 'GET',
 				'path' => '/mensas',
 				'handler' => 'getMensas',
+				'controller' => '\app\controller\Controller' 
+		),
+		array (
+				'method' => 'GET',
+				'path' => '/mensas/:id',
+				'handler' => 'getMensa',
+				'controller' => '\app\controller\Controller' 
+		),
+		array (
+				'method' => 'POST',
+				'path' => '/mensas/:id/menus',
+				'handler' => 'addMenus',
+				'controller' => '\app\controller\Controller' 
+		),
+		array(
+				'method' => 'GET',
+				'path' => '/mensas/:id/daily/:date',
+				'handler' => 'getDailyMenuplan',
 				'controller' => '\app\controller\Controller'
 		),
 		array(
 				'method' => 'GET',
-				'path' => '/mensas/:id',
-				'handler' => 'getMensa',
+				'path' => '/mensas/:id/daily',
+				'handler' => 'getDailyMenuplan',
+				'controller' => '\app\controller\Controller'
+		),
+		array(
+				'method' => 'GET',
+				'path' => '/mensas/:id/weekly',
+				'handler' => 'getWeeklyMenuplan',
 				'controller' => '\app\controller\Controller'
 		)
+		
 );
 ?>
