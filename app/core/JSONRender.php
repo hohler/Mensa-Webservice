@@ -11,9 +11,10 @@ class JSONRender implements Render {
 		if (version_compare ( PHP_VERSION, '5.4.0' ) >= 0) {
 			$options = JSON_PRETTY_PRINT;
 		}
-		$this->slim->response ()['Content-type'] = 'application/json; charset=utf-8';
+		$res = $this->slim->response();
+		$res['Content-type'] = 'application/json; charset=utf-8';
 		$rendered = json_encode ( $object, $options );
-		$this->slim->response ()->body ( $rendered) ;
+		$this->slim->response ()->body ( Helper::json_pretty_string($rendered)) ;
 	}
 }
 

@@ -29,7 +29,11 @@ foreach($routes as $route){
 	$func = function () use ($controller,$handler,$path,$request,$render) {
 		$arguments = func_get_args();
 		$paramNames = Helper::getParamNames($path);
-		$params = array_combine($paramNames,$arguments);
+
+		if(count($paramNames)==count($arguments) && count($paramNames)!=0)
+			$params = array_combine($paramNames,$arguments);
+		else 
+			$params = $arguments;
 		$render->render($controller->$handler($params));
 	};
 	// map route with a handler

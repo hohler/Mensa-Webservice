@@ -7,14 +7,15 @@ Unfortunately there is no official API or a nice way to obtain these data in an 
 That's the reason why I started this small project called Mensa-Unibe-Webservice!
 
 ###How does it work
+<strike>
 Mensa-Unibe-Webservice is based on the newsletter service [mensaunibe.zfv.ch](http://mensaunibe.zfv.ch/ "") which sends every day at 5:00 am, an email to the subscried email addresses.
 Using this newsletter service the data of the daily meals are parsed and stored on the remote service Mensa-Unibe-Webservice.
-This web service provides the stored daily meal plans in the JSON format.
+This web service provides the stored daily meal plans in the JSON format.</strike>
 
 ###Project
 The project consists of three parts:
 
-- Backend:  		pdf menuplan parser written in ruby
+- Backend:  		pdf menuplan reader written in ruby
 - Frontend: 		Mensa-Unibe-Webservice written in php
 - Mobile-Clients:	Android / Iphone App
 

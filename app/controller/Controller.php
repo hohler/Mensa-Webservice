@@ -24,7 +24,7 @@ class Controller extends MainController{
 			};
 			$canteens = array_filter($canteens,$filter);
 		} 
-		$canteens = Helper::utf8_string_array_decode($canteens);
+		
 		return new Response($canteens);
 	}
 	
