@@ -1,5 +1,6 @@
 <?php
 namespace app\core;
+use app\model\DataSource;
 class MainController {
 	protected $ds;
 	protected $request;

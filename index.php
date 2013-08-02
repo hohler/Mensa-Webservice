@@ -3,8 +3,8 @@ require 'vendor/autoload.php';
 require 'config.php';
 require 'routes.php';
 use app\core\JSONRender;
-use app\core\DataSource;
 use app\core\Helper;
+use app\model\DataSource;
 
 //autoload function
 $autoload = function ($className){
@@ -18,22 +18,29 @@ $autoload = function ($className){
 spl_autoload_register($autoload);
 $slim = new \Slim\Slim ();
 $render = new JSONRender($slim);
-DataSource::getInstance($config); #create/get instance
+DataSource::createInstance($config); //create instance
 
+//map each route with an anonymous function that binds the controller methods
+//in the slim framework.
 foreach($routes as $route){
 	$request = $slim->request();
 	$handler = $route['handler'];
 	$controller = new $route['controller'];
 	$path = $route['path'];
 	
+	//anonymous function
 	$func = function () use ($controller,$handler,$path,$request,$render) {
+		//create named parameters according the routes.php file
 		$arguments = func_get_args();
 		$paramNames = Helper::getParamNames($path);
-
-		if(count($paramNames)==count($arguments) && count($paramNames)!=0)
+		//ensure that both array have the same length that is greater than 0
+		if(count($paramNames)==count($arguments) && count($paramNames)!=0){
 			$params = array_combine($paramNames,$arguments);
-		else 
+		} else {
 			$params = $arguments;
+		}
+		
+		//call the controller method and render the response
 		$render->render($controller->$handler($params));
 	};
 	// map route with a handler

@@ -56,9 +56,8 @@ class Controller extends MainController{
 				$title = $menuData['title'];
 				$date = $menuData['date'];
 				$menu = $menuData['menu'];
-				$price = $menuData['price'];
 				if(!$this->ds->doesMenuExist($mensaId, $title, $date)){
-					$success = $this->ds->createMenu($mensaId,$title,$date,$menu,$price);
+					$success = $this->ds->createMenu($mensaId,$title,$date,$menu);
 					if($success){
 						array_push($created,$menu);
 					}
@@ -110,28 +109,10 @@ class Controller extends MainController{
 		
 		//check if the weekly plan should be filtered
 		if($day!=null){
-			$filter = function($key) use ($day){
-				return strcmp($key,$day)==0;
+			$filter = function($menu) use ($day){
+				return strcmp($menu['day'],$day)==0;
 			};
-			$menus = array();
-			
-			//copy menus with a day field equals to $day
-			foreach($plan['menus'] as $dayKey=>$menusOfDay){
-				if(strcmp($dayKey,$day)==0){
-					$i=0;
-					//remove for each menu its date field
-					foreach($menusOfDay as &$menuOfDay){ //give a reference to the sub array
-						if($i==0){
-							$plan['date'] = substr($menuOfDay['date'],0); //copy string
-						}
-						unset($menuOfDay['date']); //remove field
-						$i++;
-					}
-					array_push($menus,$menusOfDay);
-				}
-				
-			}
-			$plan['menus'] = $menus;
+			$plan['menus'] = array_values(array_filter($plan['menus'],$filter));
 		}
 		
 		if(count($plan['menus'])==0){
