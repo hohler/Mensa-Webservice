@@ -1,4 +1,9 @@
 <?php
+/**
+ * file: Controller.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\controller;
 
 use app\core\MainController;

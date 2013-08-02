@@ -1,4 +1,9 @@
 <?php
+/**
+ * file: JSONRender.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\core;
 
 class JSONRender implements Render {

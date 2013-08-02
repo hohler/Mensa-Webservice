@@ -1,4 +1,10 @@
 <?php
+/**
+ * file: routes.php
+ * @author: Alexander Rüedlinger
+ * 
+ * This file defines the routes for the froncontroller index.php
+ */
 $routes = array (
 		array (
 				'method' => 'GET',

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * file: MenuplanBuilder.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\model;
 
 class MenuplanBuilder {

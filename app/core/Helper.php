@@ -1,4 +1,9 @@
 <?php 
+/**
+ * file: Helper.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\core;
 class Helper {
 	public static function  utf8_string_array_encode(&$array){

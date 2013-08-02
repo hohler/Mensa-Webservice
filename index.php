@@ -1,4 +1,11 @@
 <?php 
+/**
+ * file: index.php
+ * @author: Alexander Rüedlinger
+ * 
+ * This file acts as frontcontroller.
+ * 
+ */
 require 'vendor/autoload.php';
 require 'config.php';
 require 'routes.php';

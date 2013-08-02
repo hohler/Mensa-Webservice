@@ -1,4 +1,9 @@
 <?php
+/**
+ * file: MainController.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\core;
 use app\model\DataSource;
 class MainController {

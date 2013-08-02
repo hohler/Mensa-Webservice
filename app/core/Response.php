@@ -1,4 +1,9 @@
 <?php
+/**
+ * file: Response.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\core;
 class Response {
 	public $result;

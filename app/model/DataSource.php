@@ -1,4 +1,9 @@
 <?php
+/**
+ * file: Datasource.php
+ * @author Alexander Rüedlinger
+ *
+ */
 namespace app\model;
 use PDO;
 class DataSource {
