@@ -6,31 +6,25 @@ Mensa-Unibe-Webservice is a simple JSON/REST API for receiving the daily meals o
 Unfortunately there is no official API or a nice way to obtain these data in an appropriate exchange format such as xml odr json.
 That's the reason why I started this small project called Mensa-Unibe-Webservice!
 
-###How does it work
-<strike>
-Mensa-Unibe-Webservice is based on the newsletter service [mensaunibe.zfv.ch](http://mensaunibe.zfv.ch/ "") which sends every day at 5:00 am, an email to the subscried email addresses.
-Using this newsletter service the data of the daily meals are parsed and stored on the remote service Mensa-Unibe-Webservice.
-This web service provides the stored daily meal plans in the JSON format.</strike>
-
 ###Project
 The project consists of three parts:
 
-- Backend:  		pdf menuplan reader written in ruby
-- Frontend: 		Mensa-Unibe-Webservice written in php
+- Backend:  		pdf menu plan reader [ruby]
+- Frontend: 		Mensa-Unibe-Webservice [php]
 - Mobile-Clients:	Android / Iphone App
 
 ###Web service API
 The main address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
 Each request is performed using a HTTP GET request.
 
-API version 1 supports these kinds of get requests:
+API version 1 supports three basic get requests:
 
-- List of all canteens
-- Daily menuplan
-- Weekly menuplan
+- List all canteens
+- Get daily menu plan
+- Get weekly menu plan
 
 
-####List of all canteens
+####List all canteens
 You can use the following URI to get all available canteens:
 ```
 http://mensa.xonix.ch/v1/mensas
@@ -63,12 +57,12 @@ This will give you the following HTTP response which contains:
   }
 }
 ```
-The content attribute contains a list of canteen objects.
+The content attribute contains a list of canteens.
 
 By means of this response message you get all valid canteens id's which are needed for further requests.
 
-####Get current daily menuplan
-Using a valid canteen id you can get the current daily meal plan by the following URI:
+####Get current daily menu plan
+Using a valid canteen id you can get the current daily menu plan by the following URI:
 ```
 http://mensa.xonix.ch/v1/mensa/{id}/dailyplan
 ```
@@ -113,10 +107,10 @@ The response is as follows:
     }
 }
 ```
-The response contains the daily meal plan object in the content attribute. 
-In the attribute menus we have a list of all menu objects. Besides that the mensa attribute stores the name of the canteen and the date attribute the date of the meal plan.
+The response contains the daily menu plan in the content attribute. 
+In the attribute menus is a list of all available menus.
 
-If the daily meal plan information is not available you'll get the following response:
+If the daily menu plan is not available you'll receive the following response message:
 ```
 {
     "result": {
@@ -130,8 +124,8 @@ If the daily meal plan information is not available you'll get the following res
     }
 }
 ```
-In this case the attribute code is set to the number 404. 
-The message attribute msg describes the error in a more human readable way.
+In this case the attribute code is set to the number 404 (see http codes). 
+The message attribute msg describes the error.
 
 ####Get daily menuplan on a specific date
 The date format is ISO 8601. E.g.: 2013-12-24
@@ -145,91 +139,91 @@ http://mensa.xonix.ch/v1/mensas/1/weeklyplan
 Example response:
 ```
 {
-    "result": {
-        "content": {
-            "mensa": "Mensa Gesellschaftsstrasse Mittag",
-            "week": "30",
-            "menus": {
-                "Monday": [
-                    {
-                        "title": "Men\u00fc",
-                        "date": "2013-07-29",
-                        "menu": [
-                            "Schweinsgeschnetzeltes",
-                            "mit Champignons",
-                            "M\u00fcscheli",
-                            "Sommergem\u00fcse",
-                            "Fleisch: Schweiz"
-                        ],
-                        "price": "CHF 6.90 \/ 12.60"
-                    },
-                    {
-                        "title": "Vegimen\u00fc",
-                        "date": "2013-07-29",
-                        "menu": [
-                            "Quorngeschnetzeltes",
-                            "mit Champignons",
-                            "M\u00fcscheli",
-                            "Sommergem\u00fcse"
-                        ],
-                        "price": "CHF 6.60 \/ 12.60"
-                    }
-                ],
-                "Tuesday": [
-                    {
-                        "title": "Men\u00fc",
-                        "date": "2013-07-30",
-                        "menu": [
-                            "Rindshamburger",
-                            "an Majoransauce",
-                            "Pilav-Reis mit Gem\u00fcse und",
-                            "Kr\u00e4utern",
-                            "Fleisch: Schweiz"
-                        ],
-                        "price": "CHF 6.90 \/ 12.60"
-                    },
-                    {
-                        "title": "Vegimen\u00fc",
-                        "date": "2013-07-30",
-                        "menu": [
-                            "BIO-Gem\u00fcseburger",
-                            "an Majoransauce",
-                            "Pilav-Reis mit Gem\u00fcse und",
-                            "Kr\u00e4utern"
-                        ],
-                        "price": "CHF 6.60 \/ 12.60"
-                    }
-                ],
-                "Wednesday": [
-                    {
-                        "title": "Men\u00fc",
-                        "date": "2013-07-31",
-                        "menu": [
-                            "Mariniertes Schweinssteak",
-                            "Barbecue-Sauce",
-                            "Pommes frites",
-                            "Kohlrabi und Broccoli",
-                            "Fleisch: Schweiz"
-                        ],
-                        "price": "CHF 6.90 \/ 12.60"
-                    },
-                    {
-                        "title": "Vegimen\u00fc",
-                        "date": "2013-07-31",
-                        "menu": [
-                            "Paniertes Gem\u00fcseschnitzel",
-                            "Barbecue-Sauce",
-                            "Pommes frites",
-                            "Kohlrabi und Broccoli"
-                        ],
-                        "price": "CHF 6.60 \/ 12.60"
-                    }
-                ]
-            }
+  "result":{
+    "content":{
+      "mensa":"Mensa Gesellschaftsstrasse",
+      "week":"30",
+      "menus":[
+        {
+          "title":"Men\u00fc",
+          "date":"2013-07-29",
+          "day":"Monday",
+          "menu":[
+            "Schweinsgeschnetzeltes",
+            "mit Champignons",
+            "M\u00fcscheli",
+            "Sommergem\u00fcse",
+            "Fleisch: Schweiz",
+            "CHF 6.90 \/ 12.60"
+          ]
         },
-        "code": 200,
-        "msg": "OK"
-    }
+        {
+          "title":"Men\u00fc",
+          "date":"2013-07-30",
+          "day":"Tuesday",
+          "menu":[
+            "Rindshamburger",
+            "an Majoransauce",
+            "Pilav-Reis mit Gem\u00fcse und",
+            "Kr\u00e4utern",
+            "Fleisch: Schweiz",
+            "CHF 6.90 \/ 12.60"
+          ]
+        },
+        {
+          "title":"Men\u00fc",
+          "date":"2013-07-31",
+          "day":"Wednesday",
+          "menu":[
+            "Mariniertes Schweinssteak",
+            "Barbecue-Sauce",
+            "Pommes frites",
+            "Kohlrabi und Broccoli",
+            "Fleisch: Schweiz",
+            "CHF 6.90 \/ 12.60"
+          ]
+        },
+        {
+          "title":"Vegimen\u00fc",
+          "date":"2013-07-29",
+          "day":"Monday",
+          "menu":[
+            "Quorngeschnetzeltes",
+            "mit Champignons",
+            "M\u00fcscheli",
+            "Sommergem\u00fcse",
+            "CHF 6.60 \/ 12.60"
+          ]
+        },
+        {
+          "title":"Vegimen\u00fc",
+          "date":"2013-07-30",
+          "day":"Tuesday",
+          "menu":[
+            "BIO-Gem\u00fcseburger",
+            "an Majoransauce",
+            "Pilav-Reis mit Gem\u00fcse und",
+            "Kr\u00e4utern",
+            "CHF 6.60 \/ 12.60"
+          ]
+        },
+        {
+          "title":"Vegimen\u00fc",
+          "date":"2013-07-31",
+          "day":"Wednesday",
+          "menu":[
+            "Paniertes Gem\u00fcseschnitzel",
+            "Barbecue-Sauce",
+            "Pommes frites",
+            "Kohlrabi und Broccoli",
+            "CHF 6.60 \/ 12.60"
+          ]
+        }
+      ]
+    },
+    "code":200,
+    "msg":"OK"
+  }
 }
 ```
 
@@ -238,44 +232,48 @@ Valid values for the placeholder {day} are: monday,tuesday,wednesday,...
 ```
 http://mensa.xonix.ch/v1/mensas/1/weeklyplan/{day}
 ```
+Example request:
+```
+http://mensa.xonix.ch/v1/mensas/1/weeklyplan/monday
+```
 Example response:
 ```
 {
-    "result": {
-        "content": {
-            "mensa": "Mensa Gesellschaftsstrasse Mittag",
-            "week": "30",
-            "menus": [
-                [
-                    {
-                        "title": "Men\u00fc",
-                        "date": "2013-07-29",
-                        "menu": [
-                            "Schweinsgeschnetzeltes",
-                            "mit Champignons",
-                            "M\u00fcscheli",
-                            "Sommergem\u00fcse",
-                            "Fleisch: Schweiz"
-                        ],
-                        "price": "CHF 6.90 \/ 12.60"
-                    },
-                    {
-                        "title": "Vegimen\u00fc",
-                        "date": "2013-07-29",
-                        "menu": [
-                            "Quorngeschnetzeltes",
-                            "mit Champignons",
-                            "M\u00fcscheli",
-                            "Sommergem\u00fcse"
-                        ],
-                        "price": "CHF 6.60 \/ 12.60"
-                    }
-                ]
-            ]
+  "result":{
+    "content":{
+      "mensa":"Mensa Gesellschaftsstrasse",
+      "week":"30",
+      "menus":[
+        {
+          "title":"Men\u00fc",
+          "date":"2013-07-29",
+          "day":"Monday",
+          "menu":[
+            "Schweinsgeschnetzeltes",
+            "mit Champignons",
+            "M\u00fcscheli",
+            "Sommergem\u00fcse",
+            "Fleisch: Schweiz",
+            "CHF 6.90 \/ 12.60"
+          ]
         },
-        "code": 200,
-        "msg": "OK"
-    }
+        {
+          "title":"Vegimen\u00fc",
+          "date":"2013-07-29",
+          "day":"Monday",
+          "menu":[
+            "Quorngeschnetzeltes",
+            "mit Champignons",
+            "M\u00fcscheli",
+            "Sommergem\u00fcse",
+            "CHF 6.60 \/ 12.60"
+          ]
+        }
+      ]
+    },
+    "code":200,
+    "msg":"OK"
+  }
 }
 ```
 
