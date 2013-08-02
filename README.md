@@ -25,11 +25,11 @@ API version 1 supports three basic get requests:
 
 
 ###Versioning
-For each request the api version must be specified. The current API version is v1.
+For each request the API version must be specified. The current API version is v1.
 The version must be appened to the base.
 E.g.:
 ```
-http://mensa.xonix.ch/v1/ other stuff
+http://mensa.xonix.ch/v1/ path etc.
 ```
 
 ####List all canteens
@@ -79,7 +79,7 @@ An example is the following request:
 http://mensa.xonix.ch/v1/mensas/1/dailyplan
 ```
 
-The response is as follows:
+Response:
 ```
 {
     "result": {
@@ -140,7 +140,7 @@ The date format is ISO 8601. E.g.: 2013-12-24
 ```
 http://mensa.xonix.ch/v1/mensas/{id}/dailyplan/{date}
 ```
-####Get current weekly menuplan
+####Get current weekly menu plan
 ```
 http://mensa.xonix.ch/v1/mensas/1/weeklyplan
 ```
@@ -235,7 +235,7 @@ Example response:
 }
 ```
 
-####Get daily menuplan on a specific day
+####Get daily menu plan on a specific day
 Valid values for the placeholder {day} are: monday,tuesday,wednesday,...
 ```
 http://mensa.xonix.ch/v1/mensas/1/weeklyplan/{day}
