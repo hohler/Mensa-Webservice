@@ -14,7 +14,7 @@ The project consists of three parts:
 - Mobile-Clients:	Android / Iphone App
 
 ###Web service API
-The main address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
+The base address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
 Each request is performed using a HTTP GET request.
 
 API version 1 supports three basic get requests:
@@ -23,6 +23,14 @@ API version 1 supports three basic get requests:
 - Get daily menu plan
 - Get weekly menu plan
 
+
+###Versioning
+For each request the api version must be specified. The current API version is v1.
+The version must be appened to the base.
+E.g.:
+```
+http://mensa.xonix.ch/v1/ other stuff
+```
 
 ####List all canteens
 You can use the following URI to get all available canteens:
