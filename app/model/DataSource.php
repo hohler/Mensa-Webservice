@@ -50,6 +50,7 @@ class DataSource {
 	public function queryMensas(){
 		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa';
 		$stmt = $this->db->query($sql);
+		
 		$mensas = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		return $mensas;
 	}
@@ -64,6 +65,7 @@ class DataSource {
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':id',$id, PDO::PARAM_INT);
 		$stmt->execute();
+		
 		$mensa = $stmt->fetch(PDO::FETCH_ASSOC);
 		return $mensa;
 	}
@@ -79,14 +81,15 @@ class DataSource {
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':name',"%{$name}%", PDO::PARAM_STR);
 		$stmt->execute();
+		
 		$mensa = $stmt->fetch(PDO::FETCH_ASSOC);
 		return $mensa;
 	}
 	
 	public function createMenu($mensaId,$title,$date,$menu){
 		$menu = implode('|',$menu);
-		$sql = 'INSERT INTO menu (mensa_id,title,date,menu)'
-				.' VALUES (:mensa_id,:title,:date,:menu)';
+		$sql = 'INSERT INTO menu (mensa_id,title,date,menu,created)'
+				.' VALUES (:mensa_id,:title,:date,:menu,NOW())';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId,PDO::PARAM_INT);
 		$stmt->bindValue(':title',$title,PDO::PARAM_STR);
@@ -105,6 +108,7 @@ class DataSource {
 		$stmt->bindValue(':date_str',$dateString,PDO::PARAM_STR);
 		$stmt->bindValue(':title',$menuTitle,PDO::PARAM_STR);
 		$stmt->execute();
+		
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		return $result['result']==1 ? true: false; 
 	}
@@ -136,9 +140,5 @@ class DataSource {
 		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
 		return $plan;
 	}
-	
-	
-	
 }
-
 ?>
