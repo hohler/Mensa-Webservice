@@ -22,5 +22,21 @@ class Response {
 		$content = Helper::utf8_string_array_encode($content);
 		$this->result = array('content'=>$content,'code'=>$code,'msg'=>$msg);
 	}
+	
+	public function setCode($code){
+		$this->result['code'] = $code;
+	}
+	
+	public function setContent($content){
+		$this->result['content'] = $content;
+	}
+	
+	public function setMsg($msg){
+		$this->result['msg'] = $msg;
+	}
+	
+	public function setReason($reason){
+		$this->result['reason'] = $reason;
+	}
 }
 ?>

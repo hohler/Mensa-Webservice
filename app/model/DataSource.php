@@ -48,7 +48,7 @@ class DataSource {
 	 * @return multitype:
 	 */
 	public function queryMensas(){
-		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa';
+		$sql = 'SELECT * FROM view_mensa';
 		$stmt = $this->db->query($sql);
 		
 		$mensas = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -61,7 +61,7 @@ class DataSource {
 	 * @return mixed
 	 */
 	public function queryMensaById($id){
-		$sql = 'SELECT id,name,street,plz,lat,lon FROM mensa WHERE id=:id';
+		$sql = 'SELECT * FROM view_mensa WHERE id = :id';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':id',$id, PDO::PARAM_INT);
 		$stmt->execute();
@@ -87,9 +87,9 @@ class DataSource {
 	}
 	
 	public function createMenu($mensaId,$title,$date,$menu){
-		$menu = implode('|',$menu);
-		$sql = 'INSERT INTO menu (mensa_id,title,date,menu,created)'
-				.' VALUES (:mensa_id,:title,:date,:menu,NOW())';
+		$menu = implode('|',array_map('trim',$menu));
+		$sql = 'INSERT INTO menu (mensa_id, title, `date`, menu, created, modified)'
+				.' VALUES (:mensa_id, :title, :date, :menu, NOW(), NOW())';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId,PDO::PARAM_INT);
 		$stmt->bindValue(':title',$title,PDO::PARAM_STR);
@@ -98,11 +98,18 @@ class DataSource {
 		return $stmt->execute();
 	}
 	
+	public function updateMenu($menuId,$menu){
+		$menu = implode('|',array_map('trim',$menu));
+		$sql = 'UPDATE menu SET menu = :menu, modified = NOW()'
+				.' WHERE id = :menu_id';
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':menu_id',$menuId,PDO::PARAM_INT);
+		$stmt->bindValue(':menu',$menu,PDO::PARAM_STR);
+		return $stmt->execute();
+	}
+	
 	public function doesMenuExist($id,$menuTitle,$dateString){
-		$sql = 'SELECT EXISTS('
-				.' SELECT 1 FROM `menu`'
-				.' WHERE mensa_id=:mensa_id and `date`=:date_str and title=:title)'
-				.' AS `result`';
+		$sql = 'SELECT EXISTS( SELECT 1 FROM `menu` WHERE mensa_id = :mensa_id AND `date` = :date_str AND title = :title) AS `result`';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$id,PDO::PARAM_INT);
 		$stmt->bindValue(':date_str',$dateString,PDO::PARAM_STR);
@@ -113,10 +120,19 @@ class DataSource {
 		return $result['result']==1 ? true: false; 
 	}
 	
-	public function queryDailyMenuplan($mensaId,$date){
-		$sql = 'SELECT `title`,`date`,`menu`,`name` FROM `menu`'
-				.' INNER JOIN `mensa` ON mensa.id = menu.mensa_id'
-				.' WHERE mensa_id=:mensa_id and `date`=:date';
+	public function queryMenu($id,$menuTitle,$dateString){
+		$sql =  'SELECT * FROM `menu` WHERE mensa_id = :mensa_id AND `date` = :date_str AND title = :title';
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':mensa_id',$id,PDO::PARAM_INT);
+		$stmt->bindValue(':date_str',$dateString,PDO::PARAM_STR);
+		$stmt->bindValue(':title',$menuTitle,PDO::PARAM_STR);
+		$stmt->execute();
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		return $result;
+	}
+	
+	public function queryDailyMenuplanByDate($mensaId,$date){
+		$sql = 'SELECT * FROM view_menu WHERE mensa_id = :mensa_id AND `date` = :date';
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
 		$stmt->bindValue(':date',$date, PDO::PARAM_STR);
@@ -127,11 +143,60 @@ class DataSource {
 		return $plan;
 	}
 	
+	public function queryLatestDailyMenuplan($mensaId){
+		$sql = 'SELECT * FROM view_menu WHERE mensa_id = :mensa_id HAVING `date` = (SELECT MAX(`date`) FROM view_menu WHERE mensa_id = :mensa_id) ' ;
+		
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$plan = $this->menuplanBuilder->buildDailyplan($rows);
+		return $plan;
+	}
+	
 	public function queryWeeklyMenuplan($mensaId){
-		$sql = "SELECT `title`, `menu`,  `date`, `name`, WEEK(  `date` ) AS  `week`,"
-				." DATE_FORMAT(  `date` ,  '%W' ) AS  `day` " 
-				." FROM  `menu` INNER JOIN mensa ON mensa.id = menu.mensa_id" 
-				." WHERE mensa_id =:mensa_id HAVING  `week` = WEEK( CURDATE( ) )";
+		$sql = 'SELECT * FROM view_menu WHERE mensa_id = :mensa_id AND `yearweek` = YEARWEEK( CURDATE( ),1)';
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		return $plan;
+	}
+	
+	public function queryWeeklyMenuplanByWeek($mensaId,$week){
+		$yearweek = intval(date("Y").$week);
+		$sql = 'SELECT * FROM view_menu WHERE mensa_id = :mensa_id AND `yearweek` = :yearweek';
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
+		$stmt->bindValue(':yearweek',$yearweek, PDO::PARAM_INT);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		return $plan;
+	}
+	
+	public function queryWeeklyMenuplanByWeekAndDay($mensaId,$week,$day){
+		$yearweek = intval(date("Y").$week);
+		
+		$sql = 'SELECT * FROM view_menu WHERE mensa_id = :mensa_id AND `yearweek` = :yearweek AND day=:day';
+		$stmt = $this->db->prepare($sql);
+		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
+		$stmt->bindValue(':yearweek',$yearweek, PDO::PARAM_INT);
+		$stmt->bindValue(':day',$day, PDO::PARAM_STR);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	
+		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		return $plan;
+	}
+	
+	public function queryLatestWeeklyMenuplan($mensaId){
+		$sql = 'SELECT * FROM view_menu WHERE mensa_id = :mensa_id HAVING `yearweek` = (SELECT MAX(YEARWEEK(date,1)) FROM view_menu WHERE mensa_id = :mensa_id)';
+		
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':mensa_id',$mensaId, PDO::PARAM_INT);
 		$stmt->execute();

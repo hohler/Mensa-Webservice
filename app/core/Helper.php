@@ -6,6 +6,22 @@
  */
 namespace app\core;
 class Helper {
+	
+	private static $days = array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday');
+	
+	
+	public static function isDay($day){
+		foreach(Helper::$days as $d){
+			if(strcmp($d,$day)==0)
+				return true;
+		}
+		return false;
+	}
+	
+	public static function formatDayString($day){
+		return ucfirst(strtolower($day));
+	}
+	
 	public static function  utf8_string_array_encode(&$array){
 		$func = function(&$value,&$key){
 			if(is_string($value)){
@@ -41,7 +57,7 @@ class Helper {
 	public static function getParamNames($path){
 		$slices = explode('/',$path);
 		$filter = function($slice){
-			return !empty($slice) && strcmp($slice[0],':')==0;
+			return !empty($slice) && strcmp($slice[0],':')==0; //compare first charachter of $slice with ':'
 		};
 		$paramNames = array_filter($slices,$filter);
 		$map = function($param){

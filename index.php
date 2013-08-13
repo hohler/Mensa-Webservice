@@ -12,6 +12,7 @@ require 'routes.php';
 use app\core\JSONRender;
 use app\core\Helper;
 use app\model\DataSource;
+use app\core\Response;
 
 //autoload function
 $autoload = function ($className){
@@ -24,13 +25,14 @@ $autoload = function ($className){
 
 spl_autoload_register($autoload);
 $slim = new \Slim\Slim ();
+
 $render = new JSONRender($slim);
 DataSource::createInstance($config); //create instance
 
 //map each route with an anonymous function that binds the controller methods
 //in the slim framework.
+$request = $slim->request();
 foreach($routes as $route){
-	$request = $slim->request();
 	$handler = $route['handler'];
 	$controller = new $route['controller'];
 	$path = $route['path'];
@@ -50,7 +52,8 @@ foreach($routes as $route){
 		//call the controller method and render the response
 		$render->render($controller->$handler($params));
 	};
-	// map route with a handler
+	
+	// map route with a handler and set http methods POST,GET,PUT etc.
 	$map = $slim->map($route['path'],$func);
 	if(is_array($route['method'])){	
 		foreach($route['method'] as $m){
@@ -58,6 +61,11 @@ foreach($routes as $route){
 		}
 	} else {
 		$map->via($route['method']);
+	}
+	
+	// set conditions
+	if(array_key_exists('conditions',$route) && is_array($route['conditions'])){
+		$map->conditions($route['conditions']);
 	}
 }
 

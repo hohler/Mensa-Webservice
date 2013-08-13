@@ -13,7 +13,7 @@ class MenuplanBuilder {
 		$i = 0;
 		$menus = array ();
 		foreach ( $rows as $row ) {
-			$menu = $each ( &$plan, $row, $i );
+			$menu = $each ( $plan, $row, $i );
 			array_push ( $menus, $menu );
 			$i ++;
 		}
@@ -22,10 +22,11 @@ class MenuplanBuilder {
 	}
 	
 	public function buildDailyplan($rows) {
-		$each = function ($plan, $row, $index) {
+		$each = function (&$plan, $row, $index) {
 			if ($index == 0) {
-				$plan ['mensa'] = $row ['name'];
+				$plan ['mensa'] = $row ['mensa'];
 				$plan ['date'] = $row ['date'];
+				$plan ['day'] = $row ['day'];
 			}
 			return array (
 					'title' => $row ['title'],
@@ -36,9 +37,9 @@ class MenuplanBuilder {
 	}
 	
 	public function buildWeeklyplan($rows) {
-		$each = function ($plan, $row, $index) {
+		$each = function (&$plan, $row, $index) {
 			if ($index == 0) {
-				$plan ['mensa'] = $row ['name'];
+				$plan ['mensa'] = $row ['mensa'];
 				$plan ['week'] = $row ['week'];
 			}
 			return array (

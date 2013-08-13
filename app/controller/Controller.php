@@ -49,30 +49,80 @@ class Controller extends MainController{
 	 */
 	public function addMenus($params){
 		$body = $this->request->getBody();
-		$code = 200;
-		$message = json_decode($body,true);
-		if(strcmp($message['token'],self::$token)==0){
-			$menus = $message['menus'];
-			$menus = Helper::utf8_string_array_decode($menus);
-			$created = array();
-			foreach($menus as $menuData){
-				$mensa = $this->ds->queryMensaByName($menuData['mensa']);
-				$mensaId = $mensa['id'];
-				$title = $menuData['title'];
-				$date = $menuData['date'];
-				$menu = $menuData['menu'];
-				if(!$this->ds->doesMenuExist($mensaId, $title, $date)){
-					$success = $this->ds->createMenu($mensaId,$title,$date,$menu);
-					if($success){
-						array_push($created,$menu);
+		if(!empty($body)){
+			$code = 200;
+			$message = json_decode($body,true);
+			if(strcmp($message['token'],self::$token)==0){
+				$menus = $message['menus'];
+				$menus = Helper::utf8_string_array_decode($menus);
+				$created = array();
+				foreach($menus as $menuData){
+					$mensa = $this->ds->queryMensaByName($menuData['mensa']);
+					$mensaId = $mensa['id'];
+					$title = $menuData['title'];
+					$date = $menuData['date'];
+					$menu = $menuData['menu'];
+					if(!$this->ds->doesMenuExist($mensaId, $title, $date)){
+						$success = $this->ds->createMenu($mensaId,$title,$date,$menu);
+						if($success){
+							array_push($created,$menu);
+						}
 					}
 				}
+				if(count($created)!=0)
+					$code = 201;
+				$this->response->status($code);
 			}
-			if(count($created)!=0)
-				$code = 201;
-			$this->response->status($code);
+			$response = new Response($created,$code);
+		} else {
+			$response = new Response(array(),400);
+			$response->setReason('No JSON Body send!');
 		}
-		return new Response($created,$code);
+		return $response;
+	}
+	
+	/**
+	 * PUT
+	 * @param $params
+	 */
+	public function updateMenus($params){
+		$body = $this->request->getBody();
+		if(!empty($body)){
+			$code = 200;
+			$message = json_decode($body,true);
+			if(strcmp($message['token'],self::$token)==0){
+				$menus = $message['menus'];
+				$menus = Helper::utf8_string_array_decode($menus);
+				$created = array();
+				foreach($menus as $menuData){
+					$mensa = $this->ds->queryMensaByName($menuData['mensa']);
+					$mensaId = $mensa['id'];
+					$title = $menuData['title'];
+					$date = $menuData['date'];
+					$menu = $menuData['menu'];
+					if($this->ds->doesMenuExist($mensaId, $title, $date)){
+						$old_menu = $this->ds->queryMenu($mensaId, $title, $date);
+						$success = $this->ds->updateMenu($old_menu['id'],$menu);
+						if($success){
+							array_push($created,array('title'=>$title,'mensa_id'=>$mensaId,'date'=>$date,'old'=>$old_menu,'update'=>$menuData));
+						}
+					} else {
+						$success = $this->ds->createMenu($mensaId, $title, $date, $menu);
+						if($success){
+							array_push($created,array('title'=>$title,'mensa_id'=>$mensaId,'date'=>$date,'created'=>$menuData));
+						}
+					}
+				}
+				if(count($created)!=0)
+					$code = 201;
+				$this->response->status($code);
+				$response = new Response($created,$code);
+			}
+		} else {
+			$response = new Response(array(),400);
+			$response->setReason('No JSON Body send!');
+		}
+		return $response;
 	}
 	
 	/**
@@ -82,14 +132,11 @@ class Controller extends MainController{
 	 */
 	public function getDailyMenuplan($params){
 		$mensaId = $params['id'];
+		$plan = $this->ds->queryDailyMenuplanByDate($mensaId,date("Y-m-d"));
 		
-		if(array_key_exists('date',$params)){
-			$date = $date = $params['date'];
-		} else {
-			$date = date('Y-m-d');
+		if(count($plan['menus'])==0){
+			$plan = $this->ds->queryLatestDailyMenuplan($mensaId);
 		}
-		
-		$plan = $this->ds->queryDailyMenuplan($mensaId, $date);
 		
 		if(count($plan['menus'])==0){
 			$code = 404;
@@ -102,22 +149,34 @@ class Controller extends MainController{
 	/**
 	 * GET
 	 * @param $params
+	 * @return \app\core\Response
+	 */
+	public function getDailyMenuplanByDate($params){
+		$mensaId = $params['id'];
+		$date = $params['date'];
+		$plan = $this->ds->queryDailyMenuplanByDate($mensaId, $date);
+	
+		if(count($plan['menus'])==0){
+			$code = 404;
+		} else {
+			$code = 200;
+		}
+		return new Response($plan,$code);
+	}
+	
+	/**
+	 * Returns the latest weekly menuplan.
+	 * 
+	 * GET
+	 * @param $params
 	 * @return boolean|\app\core\Response
 	 */
 	public function getWeeklyMenuplan($params){
 		$mensaId = $params['id'];
-		$day = null;
-		if(array_key_exists('day',$params)){
-			$day = ucfirst(strtolower($params['day']));
-		}
 		$plan = $this->ds->queryWeeklyMenuplan($mensaId);
-		
-		//check if the weekly plan should be filtered
-		if($day!=null){
-			$filter = function($menu) use ($day){
-				return strcmp($menu['day'],$day)==0;
-			};
-			$plan['menus'] = array_values(array_filter($plan['menus'],$filter));
+		//fallback!
+		if(count($plan['menus'])==0){
+			$plan = $this->ds->queryLatestWeeklyMenuplan($mensaId);
 		}
 		
 		if(count($plan['menus'])==0){
@@ -125,6 +184,80 @@ class Controller extends MainController{
 		} else { 
 			$code = 200;
 		}
+		return new Response($plan,$code);
+	}
+	
+	/**
+	 * Returns the weekly menuplan on a specific week.
+	 *
+	 * GET
+	 * @param $params
+	 * @return \app\core\Response
+	 */
+	public function getWeeklyMenuplanByWeek($params){
+		$mensaId = $params['id'];
+		$week = $params['week'];
+		$plan = $this->ds->queryWeeklyMenuplanByWeek($mensaId,$week);
+	
+		if(count($plan['menus'])==0){
+			$code = 404;
+		} else {
+			$code = 200;
+		}
+		return new Response($plan,$code);
+	}
+	
+	/**
+	 * Returns the daily menuplan on a specific week and day.
+	 *
+	 * GET
+	 * @param $params
+	 * @return \app\core\Response
+	 */
+	public function getDailyMenuplanByWeekAndDay($params){
+		$mensaId = $params['id'];
+		$week = $params['week'];
+		$day = $day = Helper::formatDayString($params['day']);
+		$plan = $this->ds->queryWeeklyMenuplanByWeekAndDay($mensaId,$week,$day);
+	
+		if(count($plan['menus'])==0){
+			$code = 404;
+		} else {
+			$code = 200;
+		}
+		return new Response($plan,$code);
+	}
+	
+	/**
+	 * Returns the latest daily menuplan filtered by the weekly menuplan.
+	 * GET
+	 * @param $params
+	 * @return boolean|\app\core\Response
+	 */
+	public function getWeeklyMenuplanFilteredByDay($params){
+		$mensaId = $params['id'];
+		$day = Helper::formatDayString($params['day']);
+		if(Helper::isDay($day)){
+			$plan = $this->ds->queryWeeklyMenuplan($mensaId);
+			//fallback!
+			if(count($plan['menus'])==0){
+				$plan = $this->ds->queryLatestWeeklyMenuplan($mensaId);
+			}
+			
+			$filter = function ($menu) use($day) {
+				return strcmp ( $menu ['day'], $day ) == 0;
+			};
+			$plan ['menus'] = array_values(array_filter($plan['menus'],$filter));
+			if(count($plan['menus'])==0){
+				$code = 404;
+			} else {
+				$code = 200;
+			}
+		} else {
+			$code = 400;
+			$plan = array();
+		}
+		
 		return new Response($plan,$code);
 	}
 	

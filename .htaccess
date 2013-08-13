@@ -4,7 +4,10 @@ RewriteEngine On
 # If you need to use the `RewriteBase` directive, it should be the
 # absolute physical path to the directory that contains this htaccess file.
 #
-# RewriteBase /
 
+#exlude v1,v2 etc.
+RewriteRule ^(v[0-9]+|dev)($|/) - [L]
+
+# RewriteBase /
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [QSA,L]
