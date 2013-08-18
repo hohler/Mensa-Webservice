@@ -86,7 +86,7 @@ class MenuplanBuilder {
 			$q = 4;
 		}
 		
-		$num = intval($time.$day_num.$q);
+		$num = $time+10*$day_num+$q;
 		return $num;
 	}
 }

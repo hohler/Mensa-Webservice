@@ -78,6 +78,7 @@ class Controller extends MainController{
 			$response = new Response(array(),400);
 			$response->setReason('No JSON Body send!');
 		}
+		
 		return $response;
 	}
 	
@@ -122,6 +123,7 @@ class Controller extends MainController{
 			$response = new Response(array(),400);
 			$response->setReason('No JSON Body send!');
 		}
+		
 		return $response;
 	}
 	
@@ -143,6 +145,7 @@ class Controller extends MainController{
 		} else { 
 			$code = 200;
 		}
+		
 		return new Response($plan,$code);
 	}
 	
@@ -161,6 +164,7 @@ class Controller extends MainController{
 		} else {
 			$code = 200;
 		}
+		
 		return new Response($plan,$code);
 	}
 	
@@ -184,6 +188,7 @@ class Controller extends MainController{
 		} else { 
 			$code = 200;
 		}
+		
 		return new Response($plan,$code);
 	}
 	
@@ -225,6 +230,7 @@ class Controller extends MainController{
 		} else {
 			$code = 200;
 		}
+		
 		return new Response($plan,$code);
 	}
 	
