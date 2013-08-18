@@ -132,7 +132,7 @@ class Controller extends MainController{
 	 */
 	public function getDailyMenuplan($params){
 		$mensaId = $params['id'];
-		$plan = $this->ds->queryDailyMenuplanByDate($mensaId,date("Y-m-d"));
+		$plan = $this->ds->queryDailyMenuplanByDate($mensaId,date('Y-m-d'));
 		
 		if(count($plan['menus'])==0){
 			$plan = $this->ds->queryLatestDailyMenuplan($mensaId);
