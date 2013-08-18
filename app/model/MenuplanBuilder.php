@@ -8,10 +8,11 @@ namespace app\model;
 
 class MenuplanBuilder {
 	
-	private function buildPlan($rows, $each) {
+	private static function buildPlan($rows, $each) {
 		$plan = array ();
 		$menus = array ();
-		for($i=0; $i < count($rows); $i++) {
+		$count = count($rows);
+		for($i=0; $i < $count; $i++) {
 			$menu = $each($plan, $rows[$i], $i);
 			array_push($menus, $menu);
 		}
@@ -28,7 +29,7 @@ class MenuplanBuilder {
 		return $plan;
 	}
 	
-	public function buildDailyplan($rows) {
+	public static function buildDailyplan($rows) {
 		$each = function (&$plan, $row, $index) {
 			if ($index == 0) {
 				$plan['mensa'] = $row['mensa'];
@@ -37,15 +38,15 @@ class MenuplanBuilder {
 			}
 			return array (
 					'num' => 0,
-					'hash' => $this->makeNumber($row),
+					'hash' => self::makeNumber($row),
 					'title' => $row['title'],
 					'menu' => explode ( '|', $row ['menu'] ) 
 			);
 		};
-		return $this->buildPlan ( $rows, $each );
+		return self::buildPlan ( $rows, $each );
 	}
 	
-	public function buildWeeklyplan($rows) {
+	public static function buildWeeklyplan($rows) {
 		$each = function (&$plan, $row, $index) {
 			if ($index == 0) {
 				$plan ['mensa'] = $row ['mensa'];
@@ -53,21 +54,21 @@ class MenuplanBuilder {
 			}
 			return array (
 					'num' => 0,
-					'hash' => $this->makeNumber($row),
+					'hash' => self::makeNumber($row),
 					'title' => $row ['title'],
 					'date' => $row ['date'],
 					'day' => $row ['day'],
 					'menu' => explode ( '|', $row ['menu'] ) 
 			);
 		};
-		return $this->buildPlan ( $rows, $each );
+		return self::buildPlan ( $rows, $each );
 	}
 	/**
 	 * This function generates a hash number based on the content of the menu (day,date,title).
 	 * @param $menu
 	 * @return hash number
 	 */
-	public function makeNumber($menu){
+	public static function makeNumber($menu){
 		$time = strtotime($menu['date']);
 		$day_num = date('N',strtotime($menu['day']));
 		$q = 0;

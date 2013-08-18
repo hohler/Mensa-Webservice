@@ -20,8 +20,6 @@ class DataSource {
 		$this->db = new PDO ( "{$driver}:host={$host};dbname={$dbname}", $user, $pass, array (
 				PDO::ATTR_PERSISTENT => true 
 		) );
-		
-		$this->menuplanBuilder = new MenuplanBuilder();
 	}
 	
 	function __destruct(){
@@ -95,6 +93,7 @@ class DataSource {
 		$stmt->bindValue(':title',$title,PDO::PARAM_STR);
 		$stmt->bindValue(':menu',$menu,PDO::PARAM_STR);
 		$stmt->bindValue(':date',$date,PDO::PARAM_STR);
+		
 		return $stmt->execute();
 	}
 	
@@ -105,6 +104,7 @@ class DataSource {
 		$stmt = $this->db->prepare($sql);
 		$stmt->bindValue(':menu_id',$menuId,PDO::PARAM_INT);
 		$stmt->bindValue(':menu',$menu,PDO::PARAM_STR);
+		
 		return $stmt->execute();
 	}
 	
@@ -127,6 +127,7 @@ class DataSource {
 		$stmt->bindValue(':date_str',$dateString,PDO::PARAM_STR);
 		$stmt->bindValue(':title',$menuTitle,PDO::PARAM_STR);
 		$stmt->execute();
+		
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		return $result;
 	}
@@ -139,7 +140,7 @@ class DataSource {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		$plan = $this->menuplanBuilder->buildDailyplan($rows);
+		$plan = MenuplanBuilder::buildDailyplan($rows);
 		return $plan;
 	}
 	
@@ -151,7 +152,7 @@ class DataSource {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-		$plan = $this->menuplanBuilder->buildDailyplan($rows);
+		$plan = MenuplanBuilder::buildDailyplan($rows);
 		return $plan;
 	}
 	
@@ -162,7 +163,7 @@ class DataSource {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		$plan = MenuplanBuilder::buildWeeklyplan($rows);
 		return $plan;
 	}
 	
@@ -175,7 +176,7 @@ class DataSource {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		$plan = MenuplanBuilder::buildWeeklyplan($rows);
 		return $plan;
 	}
 	
@@ -190,7 +191,7 @@ class DataSource {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 	
-		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		$plan = MenuplanBuilder::buildWeeklyplan($rows);
 		return $plan;
 	}
 	
@@ -202,7 +203,7 @@ class DataSource {
 		$stmt->execute();
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		$plan = $this->menuplanBuilder->buildWeeklyplan($rows);
+		$plan = MenuplanBuilder::buildWeeklyplan($rows);
 		return $plan;
 	}
 }
