@@ -10,24 +10,20 @@ class MenuplanBuilder {
 	
 	private function buildPlan($rows, $each) {
 		$plan = array ();
-		$i = 0;
 		$menus = array ();
-		foreach ( $rows as $row ) {
-			$menu = $each ( $plan, $row, $i );
-			array_push ( $menus, $menu );
-			$i ++;
+		for($i=0; $i < count($rows); $i++) {
+			$menu = $each($plan, $rows[$i], $i);
+			array_push($menus, $menu);
 		}
+		
 		usort($menus,function($a,$b) {
 			return $a['hash'] - $b['hash'];
 		});
-		$plan['menus'] = $menus;
-		$menus = array();
-		$i=0;
-		foreach($plan['menus'] as $menu){
-			$menu['num'] = $i;
-			array_push($menus,$menu);
-			$i++;
+		
+		for($i=0; $i < count($menus); $i++){
+			$menus[$i]['num'] = $i;
 		}
+		
 		$plan['menus'] = $menus;
 		return $plan;
 	}
@@ -35,14 +31,14 @@ class MenuplanBuilder {
 	public function buildDailyplan($rows) {
 		$each = function (&$plan, $row, $index) {
 			if ($index == 0) {
-				$plan ['mensa'] = $row ['mensa'];
-				$plan ['date'] = $row ['date'];
-				$plan ['day'] = $row ['day'];
+				$plan['mensa'] = $row['mensa'];
+				$plan['date'] = $row['date'];
+				$plan['day'] = $row['day'];
 			}
 			return array (
 					'num' => 0,
 					'hash' => $this->makeNumber($row),
-					'title' => $row ['title'],
+					'title' => $row['title'],
 					'menu' => explode ( '|', $row ['menu'] ) 
 			);
 		};
