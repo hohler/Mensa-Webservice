@@ -17,7 +17,18 @@ class MenuplanBuilder {
 			array_push ( $menus, $menu );
 			$i ++;
 		}
-		$plan ['menus'] = $menus;
+		usort($menus,function($a,$b) {
+			return $a['hash'] - $b['hash'];
+		});
+		$plan['menus'] = $menus;
+		$menus = array();
+		$i=0;
+		foreach($plan['menus'] as $menu){
+			$menu['num'] = $i;
+			array_push($menus,$menu);
+			$i++;
+		}
+		$plan['menus'] = $menus;
 		return $plan;
 	}
 	
@@ -29,6 +40,8 @@ class MenuplanBuilder {
 				$plan ['day'] = $row ['day'];
 			}
 			return array (
+					'num' => 0,
+					'hash' => $this->makeNumber($row),
 					'title' => $row ['title'],
 					'menu' => explode ( '|', $row ['menu'] ) 
 			);
@@ -43,6 +56,8 @@ class MenuplanBuilder {
 				$plan ['week'] = $row ['week'];
 			}
 			return array (
+					'num' => 0,
+					'hash' => $this->makeNumber($row),
 					'title' => $row ['title'],
 					'date' => $row ['date'],
 					'day' => $row ['day'],
@@ -50,6 +65,32 @@ class MenuplanBuilder {
 			);
 		};
 		return $this->buildPlan ( $rows, $each );
+	}
+	/**
+	 * This function generates a hash number based on the content of the menu (day,date,title).
+	 * @param $menu
+	 * @return hash number
+	 */
+	public function makeNumber($menu){
+		$time = strtotime($menu['date']);
+		$day_num = date('N',strtotime($menu['day']));
+		$q = 0;
+		if(strpos($menu['title'],'Tagesmen')!==false || strpos($menu['title'],'Men')!==false 
+			|| strpos($menu['title'],'Tagesgericht')!==false || strpos($menu['title'],'Warmes')!==false){
+			$q = 0;
+		} elseif(strpos($menu['title'],'Vegimen')!==false || strpos($menu['title'],'Vegi')!==false 
+				|| strpos($menu['title'],'Vege')!==false){
+			$q = 1;
+		} elseif(strpos($menu['title'],'Special')!==false || strpos($menu['title'],'Wochenhit')!==false){
+			$q=2;
+		} elseif(strpos($menu['title'],'Salat')!==false || strpos($menu['title'],'Free choice')!==false ){
+			$q = 3;
+		} else {
+			$q = 4;
+		}
+		
+		$num = intval($time.$day_num.$q);
+		return $num;
 	}
 }
 ?>
