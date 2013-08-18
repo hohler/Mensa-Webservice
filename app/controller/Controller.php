@@ -245,7 +245,7 @@ class Controller extends MainController{
 			}
 			
 			$filter = function ($menu) use($day) {
-				return strcmp ( $menu ['day'], $day ) == 0;
+				return strpos ( $menu ['day'], $day ) !== false;
 			};
 			$plan ['menus'] = array_values(array_filter($plan['menus'],$filter));
 			if(count($plan['menus'])==0){
