@@ -214,11 +214,13 @@ class DataSource {
 		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		$updates = array();
 		foreach ($rows as $row){
+			$timestamp = max(strtotime($row['created']),strtotime($row['modified']));
+			$datetime = date('Y-m-d H:i:s',$timestamp);
 			$update = array(
 				'id' => $row['id'],
 				'mensa' => $row['name'],
-				'timestamp' => strtotime(max($row['created'],$row['modified'])),
-				'datetime' => max($row['created'],$row['modified'])
+				'timestamp' => $timestamp,
+				'datetime' => $datetime
 			);
 			array_push($updates, $update);
 		}
