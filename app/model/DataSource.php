@@ -206,5 +206,23 @@ class DataSource {
 		$plan = MenuplanBuilder::buildWeeklyplan($rows);
 		return $plan;
 	}
+	
+	public function queryMensasUpdates(){
+		$sql = 'SELECT * FROM view_update';
+		$stmt = $this->db->prepare($sql);
+		$stmt->execute();
+		$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$updates = array();
+		foreach ($rows as $row){
+			$update = array(
+				'id' => $row['id'],
+				'mensa' => $row['name'],
+				'timestamp' => strtotime(max($row['created'],$row['modified'])),
+				'datetime' => max($row['created'],$row['modified'])
+			);
+			array_push($updates, $update);
+		}
+		return $updates;
+	}
 }
 ?>

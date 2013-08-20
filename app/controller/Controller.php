@@ -267,5 +267,10 @@ class Controller extends MainController{
 		return new Response($plan,$code);
 	}
 	
+	public function getMensasUpdates(){
+		$updates = $this->ds->queryMensasUpdates();
+		return new Response($updates);
+	}
+	
 }
 ?>

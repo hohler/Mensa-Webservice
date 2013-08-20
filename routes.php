@@ -103,6 +103,16 @@ $routes = array (
 		),
 		
 		/**
+		 * 
+		 */
+		array(
+				'method' => 'GET',
+				'path' => '/mensas/updates',
+				'handler' => 'getMensasUpdates',
+				'controller' => '\app\controller\Controller'
+		),
+		
+		/**
 		 * Create and update routes.
 		 */
 		

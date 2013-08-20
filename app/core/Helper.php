@@ -23,6 +23,9 @@ class Helper {
 	}
 	
 	public static function  utf8_string_array_encode(&$array){
+		if(!is_array($array))
+			return utf8_encode($array);
+		
 		$func = function(&$value,&$key){
 			if(is_string($value)){
 				$value = utf8_encode($value);
