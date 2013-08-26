@@ -25,32 +25,39 @@ $autoload = function ($className){
 };
 
 spl_autoload_register($autoload);
+
+
 $slim = new \Slim\Slim ();
-
 $jsonRender = new JSONRender($slim);
-
-$renders = array( '' => $jsonRender, '.json' => $jsonRender);
+$renders = array( '' => $jsonRender, '.json' => $jsonRender); //url endings .json, .xml or blank
+//note: blank ending -> json render!
 
 DataSource::createInstance($config); //create instance
 
+$request = $slim->request();
+
 //map each route with an anonymous function that binds the controller methods
 //in the slim framework.
-$request = $slim->request();
 foreach($routes as $route){
 	$handler = $route['handler'];
 	$controller = new $route['controller'];
 	$path = $route['path'];
 	
+	//register each route for different renders
 	foreach($renders as $format=>$render){
+		
 		//anonymous function
 		$func = function () use ($controller,$handler,$path,$request,$render) {
+			
 			//create named parameters according the routes.php file
 			$arguments = func_get_args();
 			$paramNames = Helper::getParamNames($path);
-			//ensure that both array have the same length that is greater than 0
+			
+			//ensure that both array have the same length and that its length is greater than 0!
 			if(count($paramNames)==count($arguments) && count($paramNames)!=0){
+				//make an associative array.
 				$params = array_combine($paramNames,$arguments);
-			} else {
+			} else { //otherwise just use the array
 				$params = $arguments;
 			}
 			
@@ -59,7 +66,7 @@ foreach($routes as $route){
 		};
 		
 		// map route with a handler and set http methods POST,GET,PUT etc.
-		$map = $slim->map($route['path'].$format,$func);
+		$map = $slim->map($route['path'].$format,$func); //append format to the url ending!
 		if(is_array($route['method'])){	
 			foreach($route['method'] as $m){
 				$map->via($m);

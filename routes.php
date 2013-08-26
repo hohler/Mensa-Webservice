@@ -103,7 +103,7 @@ $routes = array (
 		),
 		
 		/**
-		 * 
+		 * Route macthes: /mensas/updates
 		 */
 		array(
 				'method' => 'GET',
