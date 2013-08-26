@@ -9,7 +9,7 @@ That's the reason why I started this small project called Mensa-Unibe-Webservice
 ###Project
 The project consists of three parts:
 
-- Backend:  		pdf menu plan reader [ruby]
+- Backend:  		[pdf menu plan reader](https://github.com/lexruee/Mensa-Unibe-MPC) [ruby]
 - Frontend: 		Mensa-Unibe-Webservice [php]
 - Mobile-Clients:	Android / Iphone App
 
