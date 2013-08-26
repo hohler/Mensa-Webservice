@@ -9,7 +9,7 @@ use app\model\DataSource;
 class MainController {
 	protected $ds;
 	protected $request;
-	protected $config;
+	protected $response;
 	
 	function __construct(){
 		$this->ds = DataSource::getInstance();
