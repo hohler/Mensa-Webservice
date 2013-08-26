@@ -12,11 +12,11 @@ class MainController {
 	protected $response;
 	protected $config;
 	
-	function __construct($config){
+	function __construct($config,$ds,$request,$response){
 		$this->config = $config;
-		$this->ds = DataSource::getInstance();
-		$this->request = \Slim\Slim::getInstance()->request();
-		$this->response = \Slim\Slim::getInstance()->response();
+		$this->ds = $ds;
+		$this->request = $request;
+		$this->response = $response;
 	}
 	
 }

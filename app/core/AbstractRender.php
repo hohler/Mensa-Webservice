@@ -7,10 +7,12 @@
 namespace app\core;
 abstract class AbstractRender implements Render {
 	
+	protected $request;
 	protected $response;
 	
-	function __construct($slim) {
-		$this->slim = $slim;
+	function __construct($request,$response) {
+		$this->request = $request;
+		$this->response = $response;
 	}
 	
 	/**
@@ -20,10 +22,8 @@ abstract class AbstractRender implements Render {
 	abstract public function handle($object);
 	
 	public function render($object){
-		//make response object accessible for later changes
-		$this->response = $this->slim->response();
 		$rendered = $this->handle($object);
-		$this->slim->response ()->body ($rendered);
+		$this->response->body ($rendered);
 	}
 	
 }

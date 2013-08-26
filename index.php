@@ -28,20 +28,21 @@ spl_autoload_register($autoload);
 
 
 $slim = new \Slim\Slim ();
-$jsonRender = new JSONRender($slim);
-$renders = array( '' => $jsonRender, '.json' => $jsonRender); //url endings .json, .xml or blank
-//note: blank ending -> json render!
-
-DataSource::createInstance($config); //create instance
+$dataSource = DataSource::createInstance($config); //create instance
 
 $request = $slim->request();
+$response = $slim->response();
+
+$jsonRender = new JSONRender($request,$response);
+$renders = array( '' => $jsonRender, '.json' => $jsonRender); //url endings .json, .xml or blank
+//note: blank ending -> json render!
 
 //map each route with an anonymous function that binds the controller methods
 //in the slim framework.
 foreach($routes as $route){
 	$handler = $route['handler'];
 	$controllerName = $route['controller'];
-	$controller = new $controllerName($config);
+	$controller = new $controllerName($config,$dataSource,$request,$response);
 	$path = $route['path'];
 	
 	//register each route for different renders

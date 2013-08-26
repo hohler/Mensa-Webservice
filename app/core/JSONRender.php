@@ -14,7 +14,7 @@ class JSONRender extends AbstractRender {
 		
 		$json = json_encode($object);
 		$rendered = Helper::json_pretty_string($json);
-		$callback = $this->slim->request()->params('callback');
+		$callback = $this->request->params('callback');
 		
 		//add support for jsonp!
 		if(!empty($callback))
