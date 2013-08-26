@@ -40,7 +40,8 @@ $request = $slim->request();
 //in the slim framework.
 foreach($routes as $route){
 	$handler = $route['handler'];
-	$controller = new $route['controller'];
+	$controllerName = $route['controller'];
+	$controller = new $controllerName($config);
 	$path = $route['path'];
 	
 	//register each route for different renders
@@ -60,6 +61,7 @@ foreach($routes as $route){
 			} else { //otherwise just use the array
 				$params = $arguments;
 			}
+			
 			
 			//call the controller method and render the response
 			$render->render($controller->$handler($params));

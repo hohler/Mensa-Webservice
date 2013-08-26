@@ -10,7 +10,11 @@ use app\core\MainController;
 use app\core\Helper;
 use app\core\Response;
 class Controller extends MainController{
-	private static $token = 'Tm6eePnrnrrT9eLjin5z';
+
+	public function getToken(){
+		$wday = intval(date('w'));
+		return $this->config['tokens'][$wday];
+	}
 	
 	/**
 	 * GET
@@ -52,7 +56,7 @@ class Controller extends MainController{
 		if(!empty($body)){
 			$code = 200;
 			$message = json_decode($body,true);
-			if(strcmp($message['token'],self::$token)==0){
+			if(strcmp($message['token'],$this->getToken())==0){
 				$menus = $message['menus'];
 				$menus = Helper::utf8_string_array_decode($menus);
 				$created = array();
@@ -91,7 +95,7 @@ class Controller extends MainController{
 		if(!empty($body)){
 			$code = 200;
 			$message = json_decode($body,true);
-			if(strcmp($message['token'],self::$token)==0){
+			if(strcmp($message['token'],$this->getToken())==0){
 				$menus = $message['menus'];
 				$menus = Helper::utf8_string_array_decode($menus);
 				$created = array();
