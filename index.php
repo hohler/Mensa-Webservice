@@ -27,9 +27,8 @@ $autoload = function ($className){
 spl_autoload_register($autoload);
 
 
-$slim = new \Slim\Slim ();
+$slim = new \Slim\Slim();
 $dataSource = DataSource::createInstance($config); //create instance
-
 $request = $slim->request();
 $response = $slim->response();
 
@@ -49,7 +48,7 @@ foreach($routes as $route){
 	foreach($renders as $format=>$render){
 		
 		//anonymous function
-		$func = function () use ($controller,$handler,$path,$request,$render) {
+		$func = function () use ($controller,$handler,$path,$render) {
 			
 			//create named parameters according the routes.php file
 			$arguments = func_get_args();
@@ -62,7 +61,6 @@ foreach($routes as $route){
 			} else { //otherwise just use the array
 				$params = $arguments;
 			}
-			
 			
 			//call the controller method and render the response
 			$render->render($controller->$handler($params));
