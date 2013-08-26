@@ -6,16 +6,22 @@
  */
 namespace app\core;
 
-class JSONRender implements Render {
+class JSONRender extends AbstractRender {
+	
 	function __construct($slim) {
 		$this->slim = $slim;
 	}
 	
-	public function render($object) {
-		$res = $this->slim->response();
-		$res['Content-type'] = 'application/json; charset=utf-8';
-		$rendered = json_encode ( $object);
-		$this->slim->response ()->body ( Helper::json_pretty_string($rendered)) ;
+	public function handle($object) {
+		$json = json_encode ( $object);
+		$rendered = Helper::json_pretty_string($json);
+		$callback = $this->slim->request()->params('callback');
+		
+		//add support for jsonp!
+		if(!empty($callback)){
+			$rendered = $callback.'('.$rendered.');';
+		}
+		return $rendered;
 	}
 }
 

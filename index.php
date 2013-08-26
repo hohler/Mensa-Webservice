@@ -10,6 +10,7 @@ require 'vendor/autoload.php';
 require 'config.php';
 require 'routes.php';
 use app\core\JSONRender;
+use app\core\JSONPRender;
 use app\core\Helper;
 use app\model\DataSource;
 use app\core\Response;
@@ -26,7 +27,10 @@ $autoload = function ($className){
 spl_autoload_register($autoload);
 $slim = new \Slim\Slim ();
 
-$render = new JSONRender($slim);
+$jsonRender = new JSONRender($slim);
+
+$renders = array( '' => $jsonRender, '.json' => $jsonRender);
+
 DataSource::createInstance($config); //create instance
 
 //map each route with an anonymous function that binds the controller methods
@@ -37,35 +41,37 @@ foreach($routes as $route){
 	$controller = new $route['controller'];
 	$path = $route['path'];
 	
-	//anonymous function
-	$func = function () use ($controller,$handler,$path,$request,$render) {
-		//create named parameters according the routes.php file
-		$arguments = func_get_args();
-		$paramNames = Helper::getParamNames($path);
-		//ensure that both array have the same length that is greater than 0
-		if(count($paramNames)==count($arguments) && count($paramNames)!=0){
-			$params = array_combine($paramNames,$arguments);
+	foreach($renders as $format=>$render){
+		//anonymous function
+		$func = function () use ($controller,$handler,$path,$request,$render) {
+			//create named parameters according the routes.php file
+			$arguments = func_get_args();
+			$paramNames = Helper::getParamNames($path);
+			//ensure that both array have the same length that is greater than 0
+			if(count($paramNames)==count($arguments) && count($paramNames)!=0){
+				$params = array_combine($paramNames,$arguments);
+			} else {
+				$params = $arguments;
+			}
+			
+			//call the controller method and render the response
+			$render->render($controller->$handler($params));
+		};
+		
+		// map route with a handler and set http methods POST,GET,PUT etc.
+		$map = $slim->map($route['path'].$format,$func);
+		if(is_array($route['method'])){	
+			foreach($route['method'] as $m){
+				$map->via($m);
+			}
 		} else {
-			$params = $arguments;
+			$map->via($route['method']);
 		}
 		
-		//call the controller method and render the response
-		$render->render($controller->$handler($params));
-	};
-	
-	// map route with a handler and set http methods POST,GET,PUT etc.
-	$map = $slim->map($route['path'],$func);
-	if(is_array($route['method'])){	
-		foreach($route['method'] as $m){
-			$map->via($m);
+		// set conditions
+		if(array_key_exists('conditions',$route) && is_array($route['conditions'])){
+			$map->conditions($route['conditions']);
 		}
-	} else {
-		$map->via($route['method']);
-	}
-	
-	// set conditions
-	if(array_key_exists('conditions',$route) && is_array($route['conditions'])){
-		$map->conditions($route['conditions']);
 	}
 }
 
