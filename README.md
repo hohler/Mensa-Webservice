@@ -63,7 +63,7 @@ This will give you the following HTTP response which contains:
     "content":[
       {
         "id":"1",
-        "name":"Mensa Gesellschaftsstrasse",
+        "mensa":"Mensa Gesellschaftsstrasse",
         "street":"Gesellschaftsstrasse 2",
         "plz":"3012 Bern",
         "lat":"46.9518",
@@ -71,7 +71,7 @@ This will give you the following HTTP response which contains:
       },
       {
         "id":"2",
-        "name":"Mensa Unitobler",
+        "mensa":"Mensa Unitobler",
         "street":"Lerchenweg \/ L\u00e4nggassstrasse",
         "plz":"3012 Bern",
         "lat":"46.9544",
