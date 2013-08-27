@@ -17,11 +17,12 @@ The project consists of three parts:
 The base address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
 Each request is performed using a HTTP GET request.
 
-API version 1 supports three basic get requests:
+API version 1 supports four basic get requests:
 
 - List all canteens
 - Get daily menu plan
 - Get weekly menu plan
+- Get update status
 
 
 ###Versioning
@@ -30,6 +31,18 @@ The version must be appened to the base.
 E.g.:
 ```
 http://mensa.xonix.ch/v1/ path etc.
+```
+
+###JSONP support
+You can receive JSONP messages by appending a callback parameter:
+```
+?callback=CALLBACK_NAME
+```
+The callback parameter specifies the name of the callback function.
+
+You'll receive the original JSON message  wrapped in a callback function:
+```
+CALLBACK_NAME( json message );
 ```
 
 ####List all canteens
