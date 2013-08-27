@@ -3,7 +3,7 @@ Mensa-Unibe-Webservice
 
 Mensa-Unibe-Webservice is a simple JSON/REST API for receiving the daily meals of the canteens at the University of Bern.
 
-Unfortunately there is no official API or a nice way to obtain these data in an appropriate exchange format such as xml odr json.
+Unfortunately there is no official API or a nice way to obtain these data in an appropriate exchange format such as XML or JSON.
 That's the reason why I started this small project called Mensa-Unibe-Webservice!
 
 ###Project
@@ -11,7 +11,7 @@ The project consists of three parts:
 
 - Backend:  		[pdf menu plan reader](https://github.com/lexruee/Mensa-Unibe-MPC) [ruby]
 - Frontend: 		Mensa-Unibe-Webservice [php]
-- Mobile-Clients:	Android / Iphone App
+- Mobile-Clients:	Android / IPhone App
 
 ###Web service API
 The base address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
@@ -27,7 +27,7 @@ API version 1 supports four basic get requests:
 
 ###Versioning
 For each request the API version must be specified. The current API version is v1.
-The version must be appened to the base.
+The version must be appened to the base uri.
 E.g.:
 ```
 http://mensa.xonix.ch/v1/ path etc.
@@ -38,6 +38,11 @@ You can receive JSONP messages by appending a callback parameter on each request
 ```
 ?callback=CALLBACK_NAME
 ```
+Example:
+```
+http://mensa.xonix.ch/v1/mensas?callback=CALLBACK_NAME
+```
+
 The callback parameter specifies the name of the callback function.
 
 You'll receive the original JSON message  wrapped in a callback function:
