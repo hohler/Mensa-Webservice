@@ -11,7 +11,7 @@ The project consists of three parts:
 
 - Backend:  		[pdf menu plan reader](https://github.com/lexruee/Mensa-Unibe-MPC) [ruby]
 - Frontend: 		Mensa-Unibe-Webservice [php]
-- Mobile-Clients:	Android / IPhone App
+- Mobile-Clients:	[Android](https://github.com/lexruee/Mensa-Unibe-Android-App) / IPhone App
 
 ###Web service API
 The base address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
