@@ -34,7 +34,7 @@ http://mensa.xonix.ch/v1/ path etc.
 ```
 
 ###JSONP support
-You can receive JSONP messages by appending a callback parameter:
+You can receive JSONP messages by appending a callback parameter on each request:
 ```
 ?callback=CALLBACK_NAME
 ```
