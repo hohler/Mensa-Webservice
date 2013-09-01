@@ -72,15 +72,18 @@ class MenuplanBuilder {
 		$time = strtotime($menu['date']);
 		$day_num = date('N',strtotime($menu['day']));
 		$q = 0;
+		
 		if(strpos($menu['title'],'Tagesmen')!==false || strpos($menu['title'],'Men')!==false 
-			|| strpos($menu['title'],'Tagesgericht')!==false || strpos($menu['title'],'Warmes')!==false){
+			|| stripos($menu['title'],'Tagesgericht')!==false || stripos($menu['title'],'Warmes')!==false
+			|| stripos($menu['title'],'einfach gut')!==false){
 			$q = 0;
-		} elseif(strpos($menu['title'],'Vegimen')!==false || strpos($menu['title'],'Vegi')!==false 
-				|| strpos($menu['title'],'Vege')!==false){
+		} elseif(stripos($menu['title'],'Vegimen')!==false || stripos($menu['title'],'Vegi')!==false 
+				|| stripos($menu['title'],'Vege')!==false){
 			$q = 1;
-		} elseif(strpos($menu['title'],'Special')!==false || strpos($menu['title'],'Wochenhit')!==false){
+		} elseif(stripos($menu['title'],'Special')!==false || stripos($menu['title'],'Wochenhit')!==false
+			|| stripos($menu['title'],'voll anders')!==false){
 			$q=2;
-		} elseif(strpos($menu['title'],'Salat')!==false || strpos($menu['title'],'Free choice')!==false ){
+		} elseif(stripos($menu['title'],'Salat')!==false || stripos($menu['title'],'Free choice')!==false ){
 			$q = 3;
 		} else {
 			$q = 4;
