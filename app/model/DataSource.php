@@ -220,7 +220,8 @@ class DataSource {
 				'id' => $row['id'],
 				'mensa' => $row['name'],
 				'timestamp' => $timestamp,
-				'datetime' => $datetime
+				'datetime' => $datetime,
+				'active' => $row['active']
 			);
 			array_push($updates, $update);
 		}
