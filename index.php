@@ -9,6 +9,7 @@
 require 'vendor/autoload.php';
 require 'config.php';
 require 'routes.php';
+require 'tokens.php';
 use app\core\JSONRender;
 use app\core\JSONPRender;
 use app\core\Helper;
@@ -41,7 +42,7 @@ $renders = array( '' => $jsonRender, '.json' => $jsonRender); //url endings .jso
 foreach($routes as $route){
 	$handler = $route['handler'];
 	$controllerName = $route['controller'];
-	$controller = new $controllerName($config,$dataSource,$request,$response);
+	$controller = new $controllerName($config,$tokens,$dataSource,$request,$response);
 	$path = $route['path'];
 	
 	//register each route for different renders
@@ -62,8 +63,15 @@ foreach($routes as $route){
 				$params = $arguments;
 			}
 			
-			//call the controller method and render the response
-			$render->render($controller->$handler($params));
+			//token validation
+			if($controller->checkToken()){
+				//call the controller method and render the response
+				$render->render($controller->$handler($params));
+			} else {
+				$errorResponse = new Response(array(),400);
+				$errorResponse->setReason('Invalid token!');
+				$render->render($errorResponse);
+			}
 		};
 		
 		// map route with a handler and set http methods POST,GET,PUT etc.

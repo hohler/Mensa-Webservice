@@ -5,6 +5,7 @@
  *
  */
 namespace app\core;
+use app\core\Render;
 abstract class AbstractRender implements Render {
 	
 	protected $request;
