@@ -12,9 +12,10 @@ class MainController {
 	protected $response;
 	protected $config;
 	
-	function __construct($config,$tokens,$ds,$request,$response){
+	function __construct($config,$pullTokens,$ds,$request,$response){
 		$this->config = $config;
-		$this->tokens = $tokens;
+		$this->pushTokens = $config['tokens']; //FIX THAT!
+		$this->pullTokens = $pullTokens;
 		$this->ds = $ds;
 		$this->request = $request;
 		$this->response = $response;
@@ -24,11 +25,16 @@ class MainController {
 	 * check if token is okay
 	 */
 	public function checkToken(){
-		$tok = $this->request->params('tok');
-		$found = false;
-		foreach($this->tokens as $token){
-			if(strpos($token,$tok)!==false)
-				return true;
+		if($this->request->isGet()){
+			$tok = $this->request->params('tok');
+			$found = false;
+			foreach($this->pullTokens as $token){
+				if(strpos($token,$tok)!==false)
+					return true;
+			}
+		} else { //post, put, head or patch handle token validation by itself!
+				 //FIX THAT!
+			return true;
 		}
 		return $found;
 	}

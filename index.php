@@ -42,7 +42,7 @@ $renders = array( '' => $jsonRender, '.json' => $jsonRender); //url endings .jso
 foreach($routes as $route){
 	$handler = $route['handler'];
 	$controllerName = $route['controller'];
-	$controller = new $controllerName($config,$tokens,$dataSource,$request,$response);
+	$controller = new $controllerName($config,$pullTokens,$dataSource,$request,$response);
 	$path = $route['path'];
 	
 	//register each route for different renders

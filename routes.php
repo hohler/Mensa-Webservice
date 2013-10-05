@@ -13,7 +13,7 @@ $routes = array (
 				'method' => 'GET',
 				'path' => '/',
 				'handler' => 'getMensas',
-				'controller' => '\app\controller\Controller' 
+				'controller' => '\app\controller\Controller'
 		),
 		
 		/**
@@ -23,7 +23,7 @@ $routes = array (
 				'method' => 'GET',
 				'path' => '/mensas',
 				'handler' => 'getMensas',
-				'controller' => '\app\controller\Controller' 
+				'controller' => '\app\controller\Controller'
 		),
 		
 		/**
@@ -34,7 +34,7 @@ $routes = array (
 				'path' => '/mensas/:id',
 				'handler' => 'getMensa',
 				'controller' => '\app\controller\Controller',
-				'conditions' => array('id'=>'\d+') 
+				'conditions' => array('id'=>'\d+')
 		),
 
 		/**
@@ -45,7 +45,7 @@ $routes = array (
 				'path' => '/mensas/:id/dailyplan/:date',
 				'handler' => 'getDailyMenuplanByDate',
 				'controller' => '\app\controller\Controller',
-				'conditions' => array('id'=>'\d+','date'=>'\d\d\d\d-(\d\d|\d)-(\d\d|\d)') 
+				'conditions' => array('id'=>'\d+','date'=>'\d\d\d\d-(\d\d|\d)-(\d\d|\d)')
 				// allow for date: 2013-8-9, 2013-08-09, 2013-8-09, 2013-08-9
 		),
 		
