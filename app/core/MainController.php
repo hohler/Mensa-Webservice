@@ -11,6 +11,8 @@ class MainController {
 	protected $request;
 	protected $response;
 	protected $config;
+	private $pullTokens;
+	private $pushTokens;
 	
 	function __construct($config,$pullTokens,$ds,$request,$response){
 		$this->config = $config;
@@ -19,6 +21,12 @@ class MainController {
 		$this->ds = $ds;
 		$this->request = $request;
 		$this->response = $response;
+	}
+	
+	
+	public function getPushToken(){
+		$wday = intval(date('w'));
+		return $this->pushTokens[$wday];
 	}
 	
 	/**
