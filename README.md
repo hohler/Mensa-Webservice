@@ -24,6 +24,9 @@ API version 1 supports four basic get requests:
 - Get weekly menu plan
 - Get update status
 
+###API token
+For each request an API token must be appened to the base url. For more details send me an email:
+a.rueedlinger AT gmail.com
 
 ###Versioning
 For each request the API version must be specified. The current API version is v1.
@@ -348,3 +351,13 @@ http://mensa.xonix.ch/v1/mensas/updates
   }
 }
 ```
+
+#Copyright, license and usage
+This software is written by Alexander Rüedlinger. If you want to use this service in a project then please let me know.
+
+In order to use the service you need an API token! Email: a.rueedlinger AT gmail.com
+
+License: Creative Commons [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/deed.en_US)
+
+<img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" />
+
