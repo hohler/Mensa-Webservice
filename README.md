@@ -28,6 +28,11 @@ API version 1 supports four basic get requests:
 For each request an API token must be appened to the base url. For more details send me an email:
 a.rueedlinger AT gmail.com
 
+Example:
+```
+http://mensa.xonix.ch/v1/mensas?tok=YOUR_TOKEN
+```
+
 ###Versioning
 For each request the API version must be specified. The current API version is v1.
 The version must be appened to the base uri.
