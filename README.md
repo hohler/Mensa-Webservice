@@ -358,10 +358,22 @@ http://mensa.xonix.ch/v1/mensas/updates
 ```
 
 #Copyright, license and usage
-This software is written by Alexander Rüedlinger. If you want to use this service in a project then please let me know.
+This software is written by Alexander Rüedlinger. If you want to use this service (Mensa-Unibe-Webservice) in a project then you are obliged to request an approval for usage from Alexander Rüedlinger.
 
-In order to use the service you need an API token! Email: a.rueedlinger AT gmail.com
+In order to use this service (Mensa-Unibe-Webservice) you need an API token! A request can be sent to: a.rueedlinger AT gmail.com
 
+##Terms of service usage (Mensa-Unibe-Webservice)
+By using this service (Mensa-Unibe-Webservice), you agree to the following terms and conditions:
+
+- You attribute that the service is written by Alexander Rüedlinger.
+- You are allowed to use this service only for non-commercial purposes and for training purposes during the lecture (Introduction to Software Engineering)[http://scg.unibe.ch/teaching/ese] (ESE, unibe) in the autumn semester 2013.
+- You agree not to publish any software based on this service in any marketplace (Google Play Store, Amazon App Store, Apple App Store, etc.).
+- In any case I reserve the right to deactivate API tokens without any reason and obligations towards the user.
+- In case of misuse or violating these terms in general and the API token I am allowed without notice to deactivate the API token immediately.
+- I do not guarentee that this service is without any bugs or restrictions. In case that your software is not properly working by using this service I'm not obliged to make any changes or corrections of this service.
+
+
+##Software license (source code)
 License: Creative Commons [CC BY-NC 3.0](http://creativecommons.org/licenses/by-nc/3.0/deed.en_US)
 
 <img src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" />
