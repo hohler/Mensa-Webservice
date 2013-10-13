@@ -28,7 +28,7 @@ class DataSource {
 	
 	function getInstance(){
 		if(self::$instance==null)
-			throw new \Exception("Datasource instance has no been created!");
+			throw new \Exception("Datasource instance has not been created!");
 		return self::$instance;
 	}
 	
