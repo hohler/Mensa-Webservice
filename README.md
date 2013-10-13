@@ -136,9 +136,9 @@ Response:
                         "mit Champignons",
                         "M\u00fcscheli",
                         "Sommergem\u00fcse",
-                        "Fleisch: Schweiz"
-                    ],
-                    "price": "CHF 6.90 \/ 12.60"
+                        "Fleisch: Schweiz",
+                        "CHF 6.90 \/ 12.60"
+                    ]
                 },
                 {
                     "title": "Vegimen\u00fc",
@@ -146,9 +146,9 @@ Response:
                         "Quorngeschnetzeltes",
                         "mit Champignons",
                         "M\u00fcscheli",
-                        "Sommergem\u00fcse"
-                    ],
-                    "price": "CHF 6.60 \/ 12.60"
+                        "Sommergem\u00fcse",
+                        "CHF 6.90 \/ 12.60"
+                    ]
                 }
             ]
         },
