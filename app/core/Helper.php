@@ -71,6 +71,10 @@ class Helper {
 	}
 	
 	/**
+	 * function json_pretty_string()
+	 * 
+	 * @author Dave Perrett
+	 * @website http://www.daveperrett.com/
 	 * 
 	 * Source: http://www.daveperrett.com/articles/2008/03/11/format-json-with-php/
 	 * 
