@@ -1,6 +1,6 @@
 <?php
 /**
- * file: Render.php
+ * file: AbstractRender.php
  * @author Alexander Rüedlinger
  *
  */
