@@ -25,13 +25,29 @@ API version 1 supports four basic get requests:
 - Get update status
 
 ###API token
-For each request an API token must be appened to the base url. For more details send me an email:
+For each request an API token must be appened to the base url. For more details send me an email or see at the end of this page:
 a.rueedlinger AT gmail.com
 
 Example:
 ```
 http://mensa.xonix.ch/v1/mensas?tok=YOUR_TOKEN
 ```
+
+If you use an invalid token this produces an invalid token error:
+```
+{
+  "result":{
+    "content":[
+      
+    ],
+    "code":400,
+    "msg":"Bad Request",
+    "reason":"Invalid token!"
+  }
+}
+```
+
+So keep in mind to append for each request the tok [query parameter](http://en.wikipedia.org/wiki/Query_string).
 
 ###Versioning
 For each request the API version must be specified. The current API version is v1.
@@ -142,7 +158,7 @@ Response:
 }
 ```
 The response contains the daily menu plan in the content attribute. 
-In the attribute menus is a list of all available menus.
+The attribute menus is simply a list of all available menus.
 
 If the daily menu plan is not available you'll receive the following response message:
 ```
@@ -262,7 +278,7 @@ Example response:
 ```
 
 ####Get daily menu plan on a specific day
-Valid values for the placeholder {day} are: monday,tuesday,wednesday,...
+Valid values for the placeholder {day} are: monday, tuesday, wednesday, thursday and friday.
 ```
 http://mensa.xonix.ch/v1/mensas/1/weeklyplan/{day}
 ```
