@@ -25,5 +25,9 @@ local.properties
 # PDT-specific
 .buildpath
 
+#exclude config.php and tokens.php
 config.php
 tokens.php
+
+#exclude sql files
+*.sql
