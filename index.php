@@ -29,43 +29,45 @@ spl_autoload_register($autoload);
 
 
 $slim = new \Slim\Slim();
-$dataSource = DataSource::createInstance($config); //create instance
+$dataSource = DataSource::createInstance($config); // create ds instance
 $request = $slim->request();
 $response = $slim->response();
 
 $jsonRender = new JSONRender($request,$response);
-$renders = array( '' => $jsonRender, '.json' => $jsonRender); //url endings .json, .xml or blank
-//note: blank ending -> json render!
+$renders = array( '' => $jsonRender, '.json' => $jsonRender); // url endings .json, .xml or blank
+// note: blank ending -> json render!
 
-//map each route with an anonymous function that binds the controller methods
-//in the slim framework.
+// map each route with an anonymous function that binds the controller 
+// methods in the slim framework.
 foreach($routes as $route){
 	$handler = $route['handler'];
 	$controllerName = $route['controller'];
-	$controller = new $controllerName($config,$pullTokens,$dataSource,$request,$response);
 	$path = $route['path'];
 	
-	//register each route for different renders
+	// create an instance of $controllerName and inject some depedencies
+	$controller = new $controllerName($config,$pullTokens,$dataSource,$request,$response);
+	
+	// register each route for different renders
 	foreach($renders as $format=>$render){
-		
-		//anonymous function
+		// anonymous function
 		$func = function () use ($controller,$handler,$path,$render) {
 			
-			//create named parameters according the routes.php file
+			// create named parameters according the routes.php file
 			$arguments = func_get_args();
 			$paramNames = Helper::getParamNames($path);
 			
-			//ensure that both array have the same length and that its length is greater than 0!
+			// check that both array have the same length and that its length is greater than 0!
 			if(count($paramNames)==count($arguments) && count($paramNames)!=0){
-				//make an associative array.
+				// make an associative array.
 				$params = array_combine($paramNames,$arguments);
-			} else { //otherwise just use the array
+			} else { // otherwise just use the array
 				$params = $arguments;
 			}
 			
-			//token validation
+			// token validation
 			if($controller->checkToken()){
-				//call the controller method and render the response
+				//call the controller method, pass the $params array
+				//and render the returned response object
 				$render->render($controller->$handler($params));
 			} else {
 				$errorResponse = new Response(array(),400);
@@ -92,4 +94,5 @@ foreach($routes as $route){
 }
 
 $slim->run ();
+
 ?>

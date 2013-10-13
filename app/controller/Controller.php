@@ -9,6 +9,7 @@ namespace app\controller;
 use app\core\MainController;
 use app\core\Helper;
 use app\core\Response;
+
 class Controller extends MainController {
 	
 	/**
@@ -308,7 +309,7 @@ class Controller extends MainController {
 	public function getMensasUpdates(){
 		$updates = $this->ds->queryMensasUpdates();
 		return new Response($updates);
-	}
-	
+	}	
 }
+
 ?>

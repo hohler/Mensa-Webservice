@@ -5,6 +5,7 @@
  *
  */
 namespace app\core;
+
 class Response {
 	public $result;
 	
@@ -39,4 +40,5 @@ class Response {
 		$this->result['reason'] = $reason;
 	}
 }
+
 ?>

@@ -6,6 +6,7 @@
  */
 namespace app\core;
 use app\model\DataSource;
+
 class MainController {
 	protected $ds;
 	protected $request;
@@ -23,7 +24,9 @@ class MainController {
 		$this->response = $response;
 	}
 	
-	
+	/**
+	 * return push token 
+	 */
 	public function getPushToken(){
 		$wday = intval(date('w'));
 		return $this->pushTokens[$wday];
@@ -46,6 +49,6 @@ class MainController {
 		}
 		return $found;
 	}
-	
 }
+
 ?>
