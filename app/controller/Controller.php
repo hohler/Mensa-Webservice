@@ -12,15 +12,17 @@ use app\core\Response;
 class Controller extends MainController {
 	
 	/**
-	 * GET
+	 * HTTP Method: GET
+	 * get a list of mensas
+	 * 
 	 * @param $params
 	 * @return \app\core\Response
 	 */
 	public function getMensas($params){
 		$canteens = $this->ds->queryMensas();
-		
 		$q = $this->request->params('q');
 		$field = $this->request->params('field');
+		
 		if(!empty($q) && !empty($field)){
 			$canteens = $this->ds->queryMensas();
 			$filter = function ($canteen) use($field,$q){
@@ -33,7 +35,9 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * GET
+	 * HTTP Method: GET
+	 * get a specific mensa
+	 * 
 	 * @param $params
 	 * @return \app\core\Response
 	 */
@@ -43,18 +47,27 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * POST
+	 * HTTP Method: POST
+	 * create menus
+	 * 
 	 * @param $params
+	 * @return \app\core\Response
 	 */
 	public function addMenus($params){
+		//TODO: refactor this controller method
+		// -> write a PushMessageRader class
 		$body = $this->request->getBody();
+		
 		if(!empty($body)){
 			$code = 200;
+			// read content of the push message
 			$message = json_decode($body,true);
+			
 			if(strcmp($message['token'],$this->getPushToken())==0){
 				$menus = $message['menus'];
 				$menus = Helper::utf8_string_array_decode($menus);
 				$created = array();
+				
 				foreach($menus as $menuData){
 					$mensa = $this->ds->queryMensaByName($menuData['mensa']);
 					$mensaId = $mensa['id'];
@@ -68,8 +81,11 @@ class Controller extends MainController {
 						}
 					}
 				}
-				if(count($created)!=0)
+				
+				if(count($created)!=0){
 					$code = 201;
+				}
+				
 				$this->response->status($code);
 			}
 			$response = new Response($created,$code);
@@ -82,27 +98,38 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * PUT
+	 * HTTP Method: PUT
+	 * update menus
+	 * 
 	 * @param $params
+	 * @return \app\core\Response
 	 */
 	public function updateMenus($params){
+		//TODO: refactor this controller method
+		// -> write a PushMessageRader class
 		$body = $this->request->getBody();
+		
 		if(!empty($body)){
 			$code = 200;
+			// read content of the push message
 			$message = json_decode($body,true);
+			
 			if(strcmp($message['token'],$this->getPushToken())==0){
 				$menus = $message['menus'];
 				$menus = Helper::utf8_string_array_decode($menus);
 				$created = array();
+				
 				foreach($menus as $menuData){
 					$mensa = $this->ds->queryMensaByName($menuData['mensa']);
 					$mensaId = $mensa['id'];
 					$title = $menuData['title'];
 					$date = $menuData['date'];
 					$menu = $menuData['menu'];
+					
 					if($this->ds->doesMenuExist($mensaId, $title, $date)){
 						$old_menu = $this->ds->queryMenu($mensaId, $title, $date);
 						$success = $this->ds->updateMenu($old_menu['id'],$menu);
+						
 						if($success){
 							array_push($created,array('title'=>$title,'mensa_id'=>$mensaId,'date'=>$date,'old'=>$old_menu,'update'=>$menuData));
 						}
@@ -113,8 +140,11 @@ class Controller extends MainController {
 						}
 					}
 				}
-				if(count($created)!=0)
+				
+				if(count($created)!=0) {
 					$code = 201;
+				}
+				
 				$this->response->status($code);
 				$response = new Response($created,$code);
 			}
@@ -127,7 +157,9 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * GET
+	 * HTTP Method: GET
+	 * get daily meal plan
+	 * 
 	 * @param $params
 	 * @return \app\core\Response
 	 */
@@ -149,7 +181,9 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * GET
+	 * HTTP Method: GET
+	 * get daily meal plan on a specific date
+	 * 
 	 * @param $params
 	 * @return \app\core\Response
 	 */
@@ -168,15 +202,16 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * Returns the latest weekly menuplan.
+	 * HTTP Method: GET
+	 * return the latest weekly menuplan
 	 * 
-	 * GET
 	 * @param $params
-	 * @return boolean|\app\core\Response
+	 * @return \app\core\Response
 	 */
 	public function getWeeklyMenuplan($params){
 		$mensaId = $params['id'];
 		$plan = $this->ds->queryWeeklyMenuplan($mensaId);
+		
 		//fallback!
 		if(count($plan['menus'])==0){
 			$plan = $this->ds->queryLatestWeeklyMenuplan($mensaId);
@@ -192,9 +227,9 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * Returns the weekly menuplan on a specific week.
+	 * HTTP Method: GET
+	 * Return the weekly menuplan on a specific week
 	 *
-	 * GET
 	 * @param $params
 	 * @return \app\core\Response
 	 */
@@ -212,9 +247,9 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * Returns the daily menuplan on a specific week and day.
+	 * HTTP Method: GET
+	 * Return the daily menuplan on a specific week and days
 	 *
-	 * GET
 	 * @param $params
 	 * @return \app\core\Response
 	 */
@@ -234,17 +269,19 @@ class Controller extends MainController {
 	}
 	
 	/**
-	 * Returns the latest daily menuplan filtered by the weekly menuplan.
-	 * GET
+	 * HTTP Method: GET
+	 * Return the latest daily menuplan filtered by the weekly menuplan
+	 * 
 	 * @param $params
-	 * @return boolean|\app\core\Response
+	 * @return \app\core\Response
 	 */
 	public function getWeeklyMenuplanFilteredByDay($params){
 		$mensaId = $params['id'];
 		$day = Helper::formatDayString($params['day']);
+		
 		if(Helper::isDay($day)){
 			$plan = $this->ds->queryWeeklyMenuplan($mensaId);
-			//fallback!
+			// fallback!
 			if(count($plan['menus'])==0){
 				$plan = $this->ds->queryLatestWeeklyMenuplan($mensaId);
 			}
@@ -252,7 +289,9 @@ class Controller extends MainController {
 			$filter = function ($menu) use($day) {
 				return strpos ( $menu ['day'], $day ) !== false;
 			};
+			
 			$plan ['menus'] = array_values(array_filter($plan['menus'],$filter));
+			
 			if(count($plan['menus'])==0){
 				$code = 404;
 			} else {
