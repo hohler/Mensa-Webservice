@@ -13,7 +13,8 @@ class Response {
 			200 => 'OK',
 			201 => 'Created',
 			404 => 'Not Found',
-			400 => 'Bad Request' 
+			400 => 'Bad Request',
+			500 => 'Internal Server Error' 
 	);
 	
 	function __construct($content,$code=200,$msg=''){

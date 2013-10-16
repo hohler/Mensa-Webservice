@@ -10,6 +10,7 @@ require 'vendor/autoload.php';
 require 'config.php';
 require 'routes.php';
 require 'tokens.php';
+
 use app\core\JSONRender;
 use app\core\JSONPRender;
 use app\core\Helper;
@@ -27,16 +28,17 @@ $autoload = function ($className){
 
 spl_autoload_register($autoload);
 
+$slim = new \Slim\Slim();
+$request = $slim->request();
+$response = $slim->response();	
+$jsonRender = new JSONRender($request,$response);
+$renders = array( '' => $jsonRender, '.json' => $jsonRender); // url endings .json, .xml or blank
+// note: blank ending -> json render!
+
+
 try {
-	$slim = new \Slim\Slim();
 	$dataSource = DataSource::createInstance($config); // create ds instance
-	$request = $slim->request();
-	$response = $slim->response();
-
-	$jsonRender = new JSONRender($request,$response);
-	$renders = array( '' => $jsonRender, '.json' => $jsonRender); // url endings .json, .xml or blank
-	// note: blank ending -> json render!
-
+	
 	// map each route with an anonymous function that binds the controller 
 	// methods in the slim framework.
 	foreach($routes as $route){
@@ -92,10 +94,29 @@ try {
 			}
 		}
 	}
-
-	$slim->run ();
 }catch(Exception $e){
-	die("Sorry, the service is temporary unavailable.");
+	$errorResponse = new Response(array(),500);
+	$errorResponse->setReason('Sorry, the service is temporary '  
+	.'unavailable because of an internal server error!');
+	
+	foreach($renders as $format=>$render){
+		$func = function() use($render,$errorResponse){
+			$render->render($errorResponse);
+		};
+		
+		foreach($routes as $route){
+			$map = $slim->map($route['path'].$format,$func); 
+			if(is_array($route['method'])){	
+				foreach($route['method'] as $m){
+					$map->via($m);
+				}
+			} else {
+				$map->via($route['method']);
+			}		
+		}
+	}
 }
+
+$slim->run ();
 
 ?>
