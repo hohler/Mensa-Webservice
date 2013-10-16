@@ -17,9 +17,10 @@ class DataSource {
 		$dbname = $config['dbname'];
 		$user = $config['user'];
 		$pass = $config['password'];
-		$this->db = new PDO ( "{$driver}:host={$host};dbname={$dbname}", $user, $pass, array (
+		
+		$this->db = new PDO ( "{$driver}:host={$host};dbname={$dbname}", $user, $pass, array(
 				PDO::ATTR_PERSISTENT => true 
-		) );
+		));
 	}
 	
 	function __destruct(){
@@ -27,17 +28,24 @@ class DataSource {
 	}
 	
 	function getInstance(){
-		if(self::$instance==null)
-			throw new \Exception("Datasource instance has not been created!");
+		if(self::$instance==null){
+			throw new \Exception('Datasource instance has not been created!');
+		}
 		return self::$instance;
 	}
 	
 	function createInstance($config){
-		if($config==null)
-			throw new \Exception('$config parameter is null!');
+		if($config==null){
+			throw new \Exception('Invalid config parameter!');
+		}
 		
-		if(self::$instance==null && $config!=null)
-			self::$instance = new DataSource($config['db']);
+		if(self::$instance==null && $config!=null){
+			try {
+				self::$instance = new DataSource($config['db']);
+			}catch(PDOException $e){
+				throw new \Exception('Cannot connect to database!');
+			}
+		}
 		return self::$instance;
 	}
 	
