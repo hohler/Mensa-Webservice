@@ -62,7 +62,7 @@ $routes = array (
 		),
 		
 		/**
-		 * Route matches: /mensas/1/weeklyplan/next
+		 * Route matches: /mensas/1/weeklyplan/previous
 		 */
 		 array(
 				'method' => 'GET',
@@ -72,7 +72,7 @@ $routes = array (
 		),
 		
 		/**
-		 * Route matches: /mensas/1/weeklyplan/previous
+		 * Route matches: /mensas/1/weeklyplan/next
 		 */
 		 array(
 				'method' => 'GET',
