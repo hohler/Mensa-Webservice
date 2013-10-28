@@ -2,6 +2,7 @@
 /**
  * file: routes.php
  * @author: Alexander Rüedlinger
+ * @date 2013
  * 
  * This file defines the routes for the froncontroller index.php
  */
@@ -46,7 +47,7 @@ $routes = array (
 				'handler' => 'getDailyMenuplanByDate',
 				'controller' => '\app\controller\Controller',
 				'conditions' => array('id'=>'\d+','date'=>'\d\d\d\d-(\d\d|\d)-(\d\d|\d)')
-				// allow for date: 2013-8-9, 2013-08-09, 2013-8-09, 2013-08-9
+				// permitted date formats: 2013-8-9, 2013-08-09, 2013-8-09, 2013-08-9
 		),
 		
 		/**
@@ -59,6 +60,27 @@ $routes = array (
 				'controller' => '\app\controller\Controller',
 				'conditions' => array('id'=>'\d+')
 		),
+		
+		/**
+		 * Route matches: /mensas/1/weeklyplan/next
+		 */
+		 array(
+				'method' => 'GET',
+				'path' => '/mensas/:id/weeklyplan/previous',
+				'handler' => 'getPreviousWeeklyMenuplan',
+				'controller' => '\app\controller\Controller'
+		),
+		
+		/**
+		 * Route matches: /mensas/1/weeklyplan/previous
+		 */
+		 array(
+				'method' => 'GET',
+				'path' => '/mensas/:id/weeklyplan/next',
+				'handler' => 'getNextWeeklyMenuplan',
+				'controller' => '\app\controller\Controller'
+		),
+		
 		/**
 		 * Route matches: /mensas/1/weeklyplan/32/monday
 		 */
@@ -69,6 +91,7 @@ $routes = array (
 				'controller' => '\app\controller\Controller',
 				'conditions' => array('id'=>'\d+','week'=>'(\d|\d\d)','day'=>'\w+')
 		),
+		
 		/**
 		 * Route matches: /mensas/1/weeklyplan/32
 		 */
@@ -113,7 +136,17 @@ $routes = array (
 		),
 		
 		/**
-		 * Create and update routes.
+		 * Routes matches: /mensas/1/updates
+		 */
+		 array(
+				'method' => 'GET',
+				'path' => '/mensas/:id/updates',
+				'handler' => 'getUpdatedWeeklyMenuplan',
+				'controller' => '\app\controller\Controller'
+		 ),
+		
+		/**
+		 * Create and update routes (PUT/POST).
 		 */
 		
 		/**
@@ -125,6 +158,7 @@ $routes = array (
 				'handler' => 'updateMenus',
 				'controller' => '\app\controller\Controller'
 		),
+		
 		/**
 		 * Route matches: /mensas/menus
 		*/

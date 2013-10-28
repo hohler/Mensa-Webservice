@@ -2,6 +2,7 @@
 /**
  * file: MenuplanBuilder.php
  * @author Alexander Rüedlinger
+ * @date 2013
  *
  */
 namespace app\model;

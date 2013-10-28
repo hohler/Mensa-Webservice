@@ -2,6 +2,7 @@
 /**
  * file: index.php
  * @author: Alexander Rüedlinger
+ * @date 2013
  * 
  * This file acts as frontcontroller.
  * 

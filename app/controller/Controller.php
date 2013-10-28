@@ -2,6 +2,7 @@
 /**
  * file: Controller.php
  * @author Alexander Rüedlinger
+ * @date 2013
  *
  */
 namespace app\controller;
@@ -14,7 +15,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * get a list of mensas
+	 * Get a list of canteens.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -37,7 +38,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * get a specific mensa
+	 * Return a specific canteen.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -49,7 +50,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: POST
-	 * create menus
+	 * Create menus.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -100,14 +101,14 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: PUT
-	 * update menus
+	 * Update menus.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
 	 */
 	public function updateMenus($params){
 		//TODO: refactor this controller method
-		// -> write a PushMessageRader class
+		// -> write a PushMessageReader class
 		$body = $this->request->getBody();
 		
 		if(!empty($body)){
@@ -159,7 +160,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * get daily meal plan
+	 * Get daily meal plan.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -168,8 +169,9 @@ class Controller extends MainController {
 		$mensaId = $params['id'];
 		$plan = $this->ds->queryDailyMenuplanByDate($mensaId,date('Y-m-d'));
 		
+		//fallback!
 		if(count($plan['menus'])==0){
-			$plan = $this->ds->queryLatestDailyMenuplan($mensaId);
+			$plan = $this->ds->queryPreviousDailyMenuplan($mensaId);
 		}
 		
 		if(count($plan['menus'])==0){
@@ -183,7 +185,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * get daily meal plan on a specific date
+	 * Get daily meal plan on a specific date.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -204,7 +206,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * return the latest weekly menuplan
+	 * Return the latest weekly meal plan.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -215,7 +217,7 @@ class Controller extends MainController {
 		
 		//fallback!
 		if(count($plan['menus'])==0){
-			$plan = $this->ds->queryLatestWeeklyMenuplan($mensaId);
+			$plan = $this->ds->queryPreviousWeeklyMenuplan();
 		}
 		
 		if(count($plan['menus'])==0){
@@ -229,7 +231,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * Return the weekly menuplan on a specific week
+	 * Return the weekly meal plan on a specific week.
 	 *
 	 * @param $params
 	 * @return \app\core\Response
@@ -249,7 +251,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * Return the daily menuplan on a specific week and days
+	 * Return the daily meal plan on a specific week and days.
 	 *
 	 * @param $params
 	 * @return \app\core\Response
@@ -271,7 +273,7 @@ class Controller extends MainController {
 	
 	/**
 	 * HTTP Method: GET
-	 * Return the latest daily menuplan filtered by the weekly menuplan
+	 * Return the latest daily menuplan filtered by the weekly meal plan.
 	 * 
 	 * @param $params
 	 * @return \app\core\Response
@@ -284,7 +286,7 @@ class Controller extends MainController {
 			$plan = $this->ds->queryWeeklyMenuplan($mensaId);
 			// fallback!
 			if(count($plan['menus'])==0){
-				$plan = $this->ds->queryLatestWeeklyMenuplan($mensaId);
+				$plan = $this->ds->queryPreviousWeeklyMenuplan($mensaId);
 			}
 			
 			$filter = function ($menu) use($day) {
@@ -306,10 +308,71 @@ class Controller extends MainController {
 		return new Response($plan,$code);
 	}
 	
+	/**
+	 * HTTP Method: GET
+	 * Returns a list of canteens and timestamps associated 
+	 * with the last updated weekly meal plans. 
+	 * 
+	 * @param $params
+	 * @return \app\core\Response
+	 */
 	public function getMensasUpdates(){
 		$updates = $this->ds->queryMensasUpdates();
 		return new Response($updates);
 	}	
+	
+	/**
+	 * HTTP Method: GET
+	 * Returns the updated weekly meal plan for the next week if availaible. 
+	 * 
+	 * Alias of getNextWeeklyMenuplan()
+	 * 
+	 * @param $params
+	 * @return \app\core\Response
+	 */
+	 public function getUpdatedWeeklyMenuplan($params){
+		return $this->getNextWeeklyMenuplan($params);
+	}
+	
+	/**
+	 * HTTP Method: GET
+	 * Returns the previous weekly meal plan if availaible. 
+	 * 
+	 * @param $params
+	 * @return \app\core\Response
+	 */
+	public function getPreviousWeeklyMenuplan($params){
+		 $mensaId = $params['id'];
+		 $plan = $this->ds->queryPreviousWeeklyMenuplan($mensaId);
+		 
+		if(count($plan['menus'])==0){
+			$code = 404;
+		} else {
+			$code = 200;
+		}
+		
+		 return new Response($plan,$code);
+	}
+	
+	/**
+	 * HTTP Method: GET
+	 * Returns the next weekly meal plan if availaible. 
+	 * 
+	 * @param $params
+	 * @return \app\core\Response
+	 */
+	public function getNextWeeklyMenuplan($params){
+		$mensaId = $params['id'];
+		$plan = $this->ds->queryNextWeeklyMenuplan($mensaId);
+		 
+		if(count($plan['menus'])==0){
+			$code = 404;
+		} else {
+			$code = 200;
+		}
+		
+		return new Response($plan,$code);
+	}
 }
 
 ?>
