@@ -327,51 +327,10 @@ Example response:
 }
 ```
 ####Get update status
-You can use the following uri to receive update status for all canteens.
-```
-http://mensa.xonix.ch/v1/mensas/updates
-```
+This feature is not yet implemented!
 
-```
-{
-  "result":{
-    "content":[
-      {
-        "id":"1",
-        "mensa":"Mensa Gesellschaftsstrasse",
-        "timestamp":1377477715,
-        "datetime":"2013-08-26 02:41:55"
-      },
-      {
-        "id":"2",
-        "mensa":"Mensa Unitobler",
-        "timestamp":1377477712,
-        "datetime":"2013-08-26 02:41:52"
-      },
-      {
-        "id":"3",
-        "mensa":"Cafeteria Maximum",
-        "timestamp":1377477712,
-        "datetime":"2013-08-26 02:41:52"
-      },
-      {
-        "id":"4",
-        "mensa":"UNIESS - Bar Lounge",
-        "timestamp":1377477712,
-        "datetime":"2013-08-26 02:41:52"
-      },
-      {
-        "id":"5",
-        "mensa":"UNIESS - Bistro",
-        "timestamp":1377477712,
-        "datetime":"2013-08-26 02:41:52"
-      }
-    ],
-    "code":200,
-    "msg":"OK"
-  }
-}
-```
+####Get updated meal plans
+This feature is not yet implemented!
 
 #Copyright, license and usage
 This software is written by Alexander Rüedlinger. If you want to use this service (Mensa-Unibe-Webservice) in a project then you are obliged to request an approval for usage from Alexander Rüedlinger.
