@@ -9,9 +9,9 @@ That's the reason why I started this small project called Mensa-Unibe-Webservice
 ###Project
 The project consists of three parts:
 
-- Backend:  		[pdf menu plan reader](https://github.com/lexruee/Mensa-Unibe-MPC) [ruby]
+- Backend:  		pdf menu plan reader [ruby]
 - Frontend: 		Mensa-Unibe-Webservice [php]
-- Mobile-Clients:	[Android](https://github.com/lexruee/Mensa-Unibe-Android-App) / IPhone App
+- Mobile-Clients:	Android / IPhone App
 
 ###Web service API
 The base address of the Mensa-Unibe-Webservice is http://mensa.xonix.ch/.
@@ -277,6 +277,16 @@ Example response:
 }
 ```
 
+####Get weekly menu plan on a specific week number
+Valid week numbers for the placeholder {week_number} are: 1-52
+```
+http://mensa.xonix.ch/v1/mensas/1/weeklyplan/{week_number}
+```
+Example:
+```
+http://mensa.xonix.ch/v1/mensas/1/weeklyplan/44
+```
+
 ####Get daily menu plan on a specific day
 Valid values for the placeholder {day} are: monday, tuesday, wednesday, thursday and friday.
 ```
@@ -326,11 +336,22 @@ Example response:
   }
 }
 ```
+
+####Get daily menu plan on a specific week number
+```
+http://mensa.xonix.ch/v1/mensas/1/weeklyplan/{week_number}/{day}
+```
+Example:
+```
+http://mensa.xonix.ch/v1/mensas/1/weeklyplan/44/monday
+```
+
+
 ####Get update status
-This feature is not yet implemented!
+This feature is not yet implemented! [See issues.](https://github.com/lexruee/Mensa-Webservice/issues?milestone=2&state=open)
 
 ####Get updated meal plans
-This feature is not yet implemented!
+This feature is not yet implemented! [See issues.](https://github.com/lexruee/Mensa-Webservice/issues?milestone=2&state=open)
 
 #Copyright, license and usage
 This software is written by Alexander Rüedlinger. If you want to use this service (Mensa-Unibe-Webservice) in a project then you are obliged to request an approval for usage from Alexander Rüedlinger.
